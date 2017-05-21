@@ -28,7 +28,7 @@ environment :dev do
 end
 
 environment :prod do
-  set include_erts: true
+  set include_erts: false
   set include_src: false
   set cookie: :"Zd*(kL?Y26zHkV=|p&_0}q]J^5n,X?9b8>G8e>;yYBm3bHKpKkX:t=U4FiKH(6k?"
 end
@@ -41,4 +41,3 @@ end
 release :wo do
   set version: current_version(:wo)
 end
-
