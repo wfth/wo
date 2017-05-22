@@ -24,4 +24,4 @@ erl_crash.dump
 /config/prod.secret.exs
 
 # Generated release build
-wfth_wo.tar.gz
+wo.tar.gz
