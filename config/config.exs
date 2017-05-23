@@ -8,6 +8,13 @@ use Mix.Config
 config :mix_docker, image: "wfth/wo"
 
 # General application configuration
+# config :wo, Wo.Repo,
+#   adapter: Ecto.Adapters.PostgreSQL,
+#   database: "collector",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost"
+
 config :wo,
   ecto_repos: [Wo.Repo]
 

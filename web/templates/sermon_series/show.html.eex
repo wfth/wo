@@ -1,0 +1,38 @@
+<h2>Show sermon series</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @sermon_series.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @sermon_series.description %>
+  </li>
+
+  <li>
+    <strong>Released on:</strong>
+    <%= @sermon_series.released_on_string %>
+  </li>
+
+  <li>
+    <strong>Graphic key:</strong>
+    <%= @sermon_series.graphic_key %>
+  </li>
+
+  <li>
+    <strong>Buy graphic key:</strong>
+    <%= @sermon_series.buy_graphic_key %>
+  </li>
+
+  <li>
+    <strong>Price:</strong>
+    <%= @sermon_series.price %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: sermon_series_path(@conn, :edit, @sermon_series) %>
+<%= link "Back", to: sermon_series_path(@conn, :index) %>

@@ -1,0 +1,36 @@
+<h2>Listing sermonseries</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Released on</th>
+      <th>Graphic key</th>
+      <th>Buy graphic key</th>
+      <th>Price</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sermon_series <- @sermonseries do %>
+    <tr>
+      <td><%= sermon_series.title %></td>
+      <td><%= sermon_series.description %></td>
+      <td><%= sermon_series.released_on_string %></td>
+      <td><%= sermon_series.graphic_key %></td>
+      <td><%= sermon_series.buy_graphic_key %></td>
+      <td><%= sermon_series.price %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: sermon_series_path(@conn, :show, sermon_series), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: sermon_series_path(@conn, :edit, sermon_series), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New sermon series", to: sermon_series_path(@conn, :new) %>
