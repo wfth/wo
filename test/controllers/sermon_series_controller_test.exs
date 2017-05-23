@@ -2,7 +2,7 @@ defmodule Wo.SermonSeriesControllerTest do
   use Wo.ConnCase
 
   alias Wo.SermonSeries
-  @valid_attrs %{buy_graphic_key: "some content", description: "some content", graphic_key: "some content", price: "120.5", released_on: %{day: 17, month: 4, year: 2010}, title: "some content"}
+  @valid_attrs %{buy_graphic_key: "some content", description: "some content", graphic_key: "some content", price: "120.5", released_on_string: "4-17-2010", title: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
