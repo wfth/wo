@@ -25,3 +25,5 @@ erl_crash.dump
 
 # Generated release build
 wo.tar.gz
+
+*~
