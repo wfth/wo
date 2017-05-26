@@ -13,7 +13,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :wo, Wo.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "${HOST}", port: {:system, "PORT"}],
+  url: [scheme: "https", host: "${HOST}", port: {:system, "PORT"}],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   secret_key_base: "${SECRET_KEY_BASE}",
   cache_static_manifest: "priv/static/manifest.json",
   server: true,
@@ -23,11 +24,9 @@ config :wo, Wo.Endpoint,
 # Configure your database
 config :wo, Wo.Repo,
   adapter: Ecto.Adapters.Postgres,
-  hostname: "${DB_HOST}",
-  database: "${DB_NAME}",
-  username: "${DB_USER}",
-  password: "${DB_PASSWORD}",
-  pool_size: 20
+  url: "${DATABASE_URL}",
+  pool_size: String.to_integer("${POOL_SIZE}" || "10"),
+  ssl: true
 
 # Do not print debug messages in production
 config :logger, level: :info
