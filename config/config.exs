@@ -5,8 +5,6 @@
 # is restricted to this project.
 use Mix.Config
 
-config :mix_docker, image: "wfth/wo"
-
 # General application configuration
 config :wo,
   ecto_repos: [Wo.Repo]
