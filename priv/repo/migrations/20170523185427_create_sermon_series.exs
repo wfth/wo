@@ -2,7 +2,7 @@ defmodule Wo.Repo.Migrations.CreateSermonSeries do
   use Ecto.Migration
 
   def change do
-    create table(:sermonseries) do
+    create table(:sermon_series) do
       add :title, :string
       add :description, :text
       add :released_on_string, :string
