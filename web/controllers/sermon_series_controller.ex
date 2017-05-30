@@ -2,6 +2,7 @@ defmodule Wo.SermonSeriesController do
   use Wo.Web, :controller
 
   alias Wo.SermonSeries
+  alias Wo.Sermon
 
   def index(conn, _params) do
     sermonseries = Repo.all(SermonSeries)

@@ -17,7 +17,9 @@ defmodule Wo.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/sermonseries", SermonSeriesController
+    resources "/sermon_series", SermonSeriesController do
+      resources "/sermon", SermonController
+    end
   end
 
   # Other scopes may use custom stacks.

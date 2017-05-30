@@ -8,6 +8,7 @@ defmodule Wo.SermonSeries do
     field :graphic_key, :string
     field :buy_graphic_key, :string
     field :price, :float
+    has_many :sermons, Wo.Sermon, on_delete: :delete_all
 
     timestamps()
   end
@@ -18,6 +19,6 @@ defmodule Wo.SermonSeries do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :description, :released_on_string, :graphic_key, :buy_graphic_key, :price])
-    |> validate_required([:title, :description, :released_on_string, :price])
+    |> cast_assoc(:sermons, required: true)
   end
 end
