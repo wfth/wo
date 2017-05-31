@@ -2,8 +2,8 @@ defmodule Wo.SermonSeriesControllerTest do
   use Wo.ConnCase
 
   alias Wo.SermonSeries
-  @valid_attrs %{buy_graphic_key: "some content", description: "some content", graphic_key: "some content", price: "120.5", released_on_string: "4-17-2010", title: "some content"}
-  @invalid_attrs %{}
+  @valid_attrs %{description: "some content", price: 120.5, title: "some content"}
+  @invalid_attrs %{title: ""}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, sermon_series_path(conn, :index)

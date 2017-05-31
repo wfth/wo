@@ -19,6 +19,6 @@ defmodule Wo.SermonSeries do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :description, :released_on_string, :graphic_key, :buy_graphic_key, :price])
-    |> cast_assoc(:sermons, required: true)
+    |> validate_required([:title, :description, :price])
   end
 end

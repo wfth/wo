@@ -26,6 +26,7 @@ defmodule Wo.ConnCase do
       import Ecto.Query
 
       import Wo.Router.Helpers
+      import Wo.TestHelpers
 
       # The default endpoint for testing
       @endpoint Wo.Endpoint

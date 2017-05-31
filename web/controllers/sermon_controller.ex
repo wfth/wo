@@ -14,7 +14,7 @@ defmodule Wo.SermonController do
       Repo.get_by!(SermonSeries, id: sermon_series_id)
       |> build_assoc(:sermons)
       |> Sermon.changeset()
-    
+
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -28,7 +28,7 @@ defmodule Wo.SermonController do
       {:ok, _sermon} ->
         conn
         |> put_flash(:info, "Sermon created successfully.")
-        |> redirect(to: sermon_series_sermon_path(conn, :index, 1))
+        |> redirect(to: sermon_series_sermon_path(conn, :index, sermon_series_id))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -53,7 +53,7 @@ defmodule Wo.SermonController do
       {:ok, sermon} ->
         conn
         |> put_flash(:info, "Sermon updated successfully.")
-        |> redirect(to: sermon_series_sermon_path(conn, :show, 1, sermon))
+        |> redirect(to: sermon_series_sermon_path(conn, :show, sermon.sermon_series_id, sermon))
       {:error, changeset} ->
         render(conn, "edit.html", sermon: sermon, changeset: changeset)
     end
@@ -68,6 +68,6 @@ defmodule Wo.SermonController do
 
     conn
     |> put_flash(:info, "Sermon deleted successfully.")
-    |> redirect(to: sermon_series_sermon_path(conn, :index, 1))
+    |> redirect(to: sermon_series_sermon_path(conn, :index, sermon.sermon_series_id))
   end
 end
