@@ -4,9 +4,9 @@ defmodule Wo.SermonController do
   alias Wo.Sermon
   alias Wo.SermonSeries
 
-  def index(conn, _params) do
-    sermons = Repo.all(Sermon)
-    render(conn, "index.html", sermons: sermons)
+  def index(conn, %{"sermon_series_id" => sermon_series_id}) do
+    sermons = Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
+    render(conn, "index.html", sermons: sermons, sermon_series_id: sermon_series_id)
   end
 
   def new(conn, %{"sermon_series_id" => sermon_series_id}) do
@@ -15,7 +15,7 @@ defmodule Wo.SermonController do
       |> build_assoc(:sermons)
       |> Sermon.changeset()
 
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id)
   end
 
   def create(conn, %{"sermon" => sermon_params, "sermon_series_id" => sermon_series_id}) do
@@ -30,7 +30,7 @@ defmodule Wo.SermonController do
         |> put_flash(:info, "Sermon created successfully.")
         |> redirect(to: sermon_series_sermon_path(conn, :index, sermon_series_id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id)
     end
   end
 

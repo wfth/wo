@@ -28,13 +28,13 @@
       <td><%= sermon.price %></td>
 
       <td class="text-right">
-        <%= link "Show", to: sermon_series_sermon_path(@conn, :show, 1, sermon), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: sermon_series_sermon_path(@conn, :edit, 1, sermon), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: sermon_series_sermon_path(@conn, :delete, 1, sermon), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: sermon_series_sermon_path(@conn, :show, @sermon_series_id, sermon), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: sermon_series_sermon_path(@conn, :edit, @sermon_series_id, sermon), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: sermon_series_sermon_path(@conn, :delete, @sermon_series_id, sermon), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New sermon", to: sermon_series_sermon_path(@conn, :new, 1) %>
+<%= link "New sermon", to: sermon_series_sermon_path(@conn, :new, @sermon_series_id) %>
