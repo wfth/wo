@@ -35,5 +35,5 @@
 </ul>
 
 <%= link "Edit", to: sermon_series_path(@conn, :edit, @sermon_series) %>
-<%= link "Add Sermon", to: sermon_series_sermon_path(@conn, :new, @sermon_series.id) %>
+<%= link "Show Sermons", to: sermon_series_sermon_path(@conn, :index, @sermon_series.id) %>
 <%= link "Back", to: sermon_series_path(@conn, :index) %>
