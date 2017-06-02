@@ -1,0 +1,33 @@
+<h2>Search</h2>
+
+<%= form_for @conn, search_path(@conn, :search), [as: :search], fn f -> %>
+
+<div class="form-group">
+  <%= text_input f, :search_term %>
+  <%= submit "Submit", class: "btn btn-primary" %>
+</div>
+
+<% end %>
+
+<h3>Sermons</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Passage</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for {sermon, i} <- Enum.with_index(@sermons) do %>
+    <tr>
+      <td><%= List.first(matrix_at([@sermons, @ranks], i)).title %></td>
+      <td><%= List.first(matrix_at([@sermons, @ranks], i)).description %></td>
+      <td><%= List.first(matrix_at([@sermons, @ranks], i)).passage %></td>
+      <td><%= List.last(matrix_at([@sermons, @ranks], i)) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
