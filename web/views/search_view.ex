@@ -1,7 +1,7 @@
 defmodule Wo.SearchView do
   use Wo.Web, :view
 
-  def matrix_at(list, i) do
-    [Enum.at(Enum.at(list, 0), i), Enum.at(Enum.at(list, 1), i)]
+  def matrix_at([head, tail], i) do
+    [Enum.at(head, i), Enum.at(tail, i)]
   end
 end

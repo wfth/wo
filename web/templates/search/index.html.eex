@@ -22,12 +22,14 @@
   </thead>
   <tbody>
     <%= for {sermon, i} <- Enum.with_index(@sermons) do %>
-    <tr>
-      <td><%= List.first(matrix_at([@sermons, @ranks], i)).title %></td>
-      <td><%= List.first(matrix_at([@sermons, @ranks], i)).description %></td>
-      <td><%= List.first(matrix_at([@sermons, @ranks], i)).passage %></td>
-      <td><%= List.last(matrix_at([@sermons, @ranks], i)) %></td>
-    </tr>
+      <% [sermon, rank] = matrix_at([@sermons, @ranks], i) %>
+      <% [title, description, passage] = List.flatten(sermon.rows) %>
+      <tr>
+        <td><%= raw(title) %></td>
+        <td><%= raw(description) %></td>
+        <td><%= raw(passage) %></td>
+        <td><%= rank %></td>
+      </tr>
     <% end %>
   </tbody>
 </table>
