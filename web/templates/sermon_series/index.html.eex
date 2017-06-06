@@ -5,6 +5,7 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th>Passages</th>
       <th>Released on</th>
       <th>Graphic key</th>
       <th>Buy graphic key</th>
@@ -18,6 +19,7 @@
     <tr>
       <td><%= sermon_series.title %></td>
       <td><%= sermon_series.description %></td>
+      <td><%= sermon_series.passages %></td>
       <td><%= sermon_series.released_on_string %></td>
       <td><%= sermon_series.graphic_key %></td>
       <td><%= sermon_series.buy_graphic_key %></td>

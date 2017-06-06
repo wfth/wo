@@ -10,7 +10,7 @@ defmodule Wo.Repo.Migrations.AddSearchDocumentTriggersToSermons do
                 INSERT INTO search_documents(document_table, document_id, language, content)
                 VALUES(TG_TABLE_NAME, NEW.id, 'english', setweight(to_tsvector('english', NEW.title), 'A') ||
                                                          setweight(to_tsvector('english', NEW.description), 'C') ||
-                                                         setweight(to_tsvector('english', NEW.passage), 'D'));
+                                                         setweight(to_tsvector('english', NEW.passages), 'D'));
                 RETURN NEW;
             END;
             $BODY$
@@ -48,7 +48,7 @@ defmodule Wo.Repo.Migrations.AddSearchDocumentTriggersToSermons do
             BEGIN
                 UPDATE search_documents SET content = setweight(to_tsvector('english', NEW.title), 'A') ||
                                                       setweight(to_tsvector('english', NEW.description), 'C') ||
-                                                      setweight(to_tsvector('english', NEW.passage), 'D');
+                                                      setweight(to_tsvector('english', NEW.passages), 'D');
                 RETURN NEW;
             END;
             $BODY$

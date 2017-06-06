@@ -18,6 +18,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :passages, class: "control-label" %>
+    <%= textarea f, :passages, class: "form-control" %>
+    <%= error_tag f, :passages %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :released_on_string, class: "control-label" %>
     <%= text_input f, :released_on_string, class: "form-control" %>
     <%= error_tag f, :released_on_string %>

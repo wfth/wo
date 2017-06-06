@@ -13,8 +13,8 @@
   </li>
 
   <li>
-    <strong>Passage:</strong>
-    <%= @sermon.passage %>
+    <strong>Passages:</strong>
+    <%= @sermon.passages %>
   </li>
 
   <li>

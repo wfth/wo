@@ -9,8 +9,6 @@
 
 <% end %>
 
-<h3>Sermons</h3>
-
 <table class="table">
   <thead>
     <tr>
@@ -21,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= for {sermon, i} <- Enum.with_index(@sermons) do %>
+    <%= for {_sermon, i} <- Enum.with_index(@sermons) do %>
       <% [sermon, rank] = matrix_at([@sermons, @ranks], i) %>
       <% [title, description, passage] = List.flatten(sermon.rows) %>
       <tr>

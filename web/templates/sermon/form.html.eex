@@ -18,9 +18,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :passage, class: "control-label" %>
-    <%= text_input f, :passage, class: "form-control" %>
-    <%= error_tag f, :passage %>
+    <%= label f, :passages, class: "control-label" %>
+    <%= text_input f, :passages, class: "form-control" %>
+    <%= error_tag f, :passages %>
   </div>
 
   <div class="form-group">

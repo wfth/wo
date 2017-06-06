@@ -4,7 +4,7 @@ defmodule Wo.Sermon do
   schema "sermons" do
     field :title, :string
     field :description, :string
-    field :passage, :string
+    field :passages, :string
     field :audio_key, :string
     field :transcript_key, :string
     field :buy_graphic_key, :string
@@ -19,7 +19,7 @@ defmodule Wo.Sermon do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :description, :passage, :audio_key, :transcript_key, :buy_graphic_key, :price])
-    |> validate_required([:title, :description, :passage, :price])
+    |> cast(params, [:title, :description, :passages, :audio_key, :transcript_key, :buy_graphic_key, :price])
+    |> validate_required([:title, :description, :passages, :price])
   end
 end

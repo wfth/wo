@@ -2,7 +2,7 @@ defmodule Wo.SermonControllerTest do
   use Wo.ConnCase
 
   alias Wo.Sermon
-  @valid_attrs %{description: "some content", passage: "some content", price: 120.5, title: "some content"}
+  @valid_attrs %{description: "some content", passages: "some content", price: 120.5, title: "some content"}
   @invalid_attrs %{title: ""}
 
   setup do

@@ -5,7 +5,7 @@
     <tr>
       <th>Title</th>
       <th>Description</th>
-      <th>Passage</th>
+      <th>Passages</th>
       <th>Sermon series</th>
       <th>Audio key</th>
       <th>Transcript key</th>
@@ -20,7 +20,7 @@
     <tr>
       <td><%= sermon.title %></td>
       <td><%= sermon.description %></td>
-      <td><%= sermon.passage %></td>
+      <td><%= sermon.passages %></td>
       <td><%= sermon.sermon_series_id %></td>
       <td><%= sermon.audio_key %></td>
       <td><%= sermon.transcript_key %></td>

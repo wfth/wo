@@ -13,6 +13,11 @@
   </li>
 
   <li>
+    <strong>Passages:</strong>
+    <%= @sermon_series.passages %>
+  </li>
+
+  <li>
     <strong>Released on:</strong>
     <%= @sermon_series.released_on_string %>
   </li>
