@@ -19,6 +19,6 @@ defmodule Wo.Sermon do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :description, :passages, :audio_url, :buy_graphic_url, :price])
-    |> validate_required([:title, :description, :passages, :price])
+    |> validate_required([:title, :description, :price])
   end
 end

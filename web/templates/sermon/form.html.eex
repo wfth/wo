@@ -1,4 +1,4 @@
-<%= form_for @changeset, @action, fn f -> %>
+<%= form_for @changeset, @action, [id: "new_sermon"], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -24,24 +24,99 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :audio_url, class: "control-label" %>
-    <%= text_input f, :audio_url, class: "form-control" %>
-    <%= error_tag f, :audio_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :buy_graphic_url, class: "control-label" %>
-    <%= text_input f, :buy_graphic_url, class: "form-control" %>
-    <%= error_tag f, :buy_graphic_url %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :price, class: "control-label" %>
     <%= number_input f, :price, step: "any", class: "form-control" %>
     <%= error_tag f, :price %>
   </div>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
+  <%= hidden_input f, :audio_url %>
+  <%= hidden_input f, :buy_graphic_url %>
 <% end %>
+
+<form enctype="multipart/form-data">
+  <div class="form-group">
+    <label class="btn btn-primary">
+      <input id="audio-file" type="file" accept="audio/*" style="display:none" onchange="$('#audio-file-selected').html($(this).val().replace('C:\\fakepath\\', ''));">
+      Choose audio file...
+    </label>
+    <span class="label label-info" id="audio-file-selected"></span>
+  </div>
+</form>
+
+<form enctype="multipart/form-data">
+  <div class="form-group">
+    <label class="btn btn-primary">
+      <input id="buy-graphic-file" type="file" accept="image/*" style="display:none" onchange="$('#buy-graphic-file-selected').html($(this).val().replace('C:\\fakepath\\', ''));">
+      Choose buy graphic file...
+    </label>
+    <span class="label label-info" id="buy-graphic-file-selected"></span>
+  </div>
+</form>
+
+<button type="button" class="btn btn-primary">Add</button>
+
+<script type="text/javascript">
+  var sermonUuid = uuid();
+  var audioUploadFinished = false;
+  var buyGraphicUploadFinished = false;
+
+  AWS.config = new AWS.Config({
+    region: 'us-east-1',
+    accessKeyId: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_KEY") %>',
+    secretAccessKey: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_SECRET") %>'
+  });
+
+  // Stolen from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript.
+  // Has a 1 in 1,000,000 chance of collision.
+  function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  }
+
+  function createManagedUpload(file) {
+    var upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: 'wisdomonline-development',
+        Key: "sermons/" + sermonUuid + "/" + file.name,
+        Body: file,
+        ContentType: file.type,
+        ACL: 'public-read'
+      }});
+
+    upload.on('httpUploadProgress', function (progress) {
+    });
+
+    return upload;
+  }
+
+  function barrier() {
+    if (audioUploadFinished && buyGraphicUploadFinished) {
+      $('#new_sermon').submit();
+    }
+  }
+
+  $(':button').on('click', function() {
+    var audioInput = document.getElementById('audio-file');
+    var buyGraphicInput = document.getElementById('buy-graphic-file');
+    if (audioInput.files.length <= 0 || buyGraphicInput.files.length <= 0) {
+      return;
+    }
+
+    var audioUpload = createManagedUpload(audioInput.files[0]);
+    var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0]);
+    audioUpload.send(function(err, audioData) {
+      console.log("audio upload finished");
+      $('#sermon_audio_url').val(audioData.Location);
+      audioUploadFinished = true;
+      barrier();
+    });
+    buyGraphicUpload.send(function(err, buyGraphicData) {
+      console.log("buy graphic upload finished");
+      $('#sermon_buy_graphic_url').val(buyGraphicData.Location);
+      buyGraphicUploadFinished = true;
+      barrier();
+    });
+  });
+</script>
