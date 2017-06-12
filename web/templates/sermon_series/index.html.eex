@@ -21,8 +21,8 @@
       <td><%= sermon_series.description %></td>
       <td><%= sermon_series.passages %></td>
       <td><%= sermon_series.released_on_string %></td>
-      <td><%= sermon_series.graphic_key %></td>
-      <td><%= sermon_series.buy_graphic_key %></td>
+      <td><%= sermon_series.graphic_url %></td>
+      <td><%= sermon_series.buy_graphic_url %></td>
       <td><%= sermon_series.price %></td>
 
       <td class="text-right">

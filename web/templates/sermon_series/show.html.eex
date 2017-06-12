@@ -24,12 +24,12 @@
 
   <li>
     <strong>Graphic key:</strong>
-    <%= @sermon_series.graphic_key %>
+    <%= @sermon_series.graphic_url %>
   </li>
 
   <li>
     <strong>Buy graphic key:</strong>
-    <%= @sermon_series.buy_graphic_key %>
+    <%= @sermon_series.buy_graphic_url %>
   </li>
 
   <li>

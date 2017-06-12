@@ -1,4 +1,4 @@
-<%= form_for @changeset, @action, fn f -> %>
+<%= form_for @changeset, @action, [id: "new_sermon_series"], fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -30,24 +30,86 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :graphic_key, class: "control-label" %>
-    <%= text_input f, :graphic_key, class: "form-control" %>
-    <%= error_tag f, :graphic_key %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :buy_graphic_key, class: "control-label" %>
-    <%= text_input f, :buy_graphic_key, class: "form-control" %>
-    <%= error_tag f, :buy_graphic_key %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :price, class: "control-label" %>
     <%= number_input f, :price, step: "any", class: "form-control" %>
     <%= error_tag f, :price %>
   </div>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
+  <%= hidden_input f, :graphic_url %>
+  <%= hidden_input f, :buy_graphic_url %>
 <% end %>
+
+<form enctype="multipart/form-data">
+  <div class="form-group">
+    <label class="btn btn-primary">
+      <input id="graphic-file" type="file" accept="image/*" style="display:none" onchange="$('#graphic-file-selected').html($(this).val().replace('C:\\fakepath\\', ''));">
+      Choose graphic file...
+    </label>
+    <span class="label label-info" id="graphic-file-selected"></span>
+  </div>
+</form>
+
+<form enctype="multipart/form-data">
+  <div class="form-group">
+    <label class="btn btn-primary">
+      <input id="buy-graphic-file" type="file" accept="image/*" style="display:none" onchange="$('#buy-graphic-file-selected').html($(this).val().replace('C:\\fakepath\\', ''));">
+      Choose buy graphic file...
+    </label>
+    <span class="label label-info" id="buy-graphic-file-selected"></span>
+  </div>
+</form>
+
+<button type="button" class="btn btn-primary">Add</button>
+
+<script type="text/javascript">
+  var sermon_series_uuid = uuid();
+
+  AWS.config = new AWS.Config({
+    region: 'us-east-1',
+    accessKeyId: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_KEY") %>',
+    secretAccessKey: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_SECRET") %>'
+  });
+
+  // Stolen from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript.
+  // Has a 1 in 1,000,000 chance of collision.
+  function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  }
+
+  function createManagedUpload(file) {
+    var upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: 'wisdomonline-development',
+        Key: "sermon_series/" + sermon_series_uuid + "/" + file.name,
+        Body: file,
+        ContentType: file.type,
+        ACL: 'public-read'
+      }});
+
+    upload.on('httpUploadProgress', function (progress) {
+    });
+
+    return upload;
+  }
+
+  $(':button').on('click', function() {
+    var graphicInput = document.getElementById('graphic-file');
+    var buyGraphicInput = document.getElementById('buy-graphic-file');
+    if (graphicInput.files.length <= 0 || buyGraphicInput.files.length <= 0) {
+      return;
+    }
+
+    var graphicUpload = createManagedUpload(graphicInput.files[0]);
+    var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0]);
+    graphicUpload.send(function(err, graphicData) {
+      $('#sermon_series_graphic_url').val(graphicData.key);
+      buyGraphicUpload.send(function(err, buyGraphicData) {
+        $('#sermon_series_buy_graphic_url').val(buyGraphicData.key);
+        $('#new_sermon_series').submit();
+      });
+    });
+  });
+</script>

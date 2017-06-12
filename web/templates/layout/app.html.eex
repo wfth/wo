@@ -9,6 +9,9 @@
 
     <title>Hello Wo!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
   </head>
 
   <body>

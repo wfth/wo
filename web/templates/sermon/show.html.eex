@@ -24,17 +24,12 @@
 
   <li>
     <strong>Audio key:</strong>
-    <%= @sermon.audio_key %>
-  </li>
-
-  <li>
-    <strong>Transcript key:</strong>
-    <%= @sermon.transcript_key %>
+    <%= @sermon.audio_url %>
   </li>
 
   <li>
     <strong>Buy graphic key:</strong>
-    <%= @sermon.buy_graphic_key %>
+    <%= @sermon.buy_graphic_url %>
   </li>
 
   <li>
