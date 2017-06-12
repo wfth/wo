@@ -2,11 +2,18 @@
 
 ## Development
 
-1. Install PostgreSQL, Elixir, and Phoenix
-3. Install dependencies with `mix deps.get`
-4. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-5. Install Node.js dependencies with `npm install`
-6. Start Phoenix endpoint with `mix phoenix.server`
+#### Install Tools
+
+1. Install [Node Version Manager](https://github.com/creationix/nvm)
+2. Install [direnv](https://direnv.net)
+3. Install PostgreSQL, Elixir, and Phoenix
+
+#### Install Application Dependencies
+
+1. Install dependencies with `mix deps.get`
+2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+3. Install Node.js dependencies with `npm install`
+4. Start Phoenix endpoint with `mix phoenix.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
@@ -20,9 +27,9 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Release Build
 
-This project implements the approach described at https://shovik.com/blog/8-deploying-phoenix-apps-with-docker in order to create a production-ready Docker image.
+This project implements the approach described at https://shovik.com/blog/8-deploying-phoenix-apps-with-docker to create a production-ready Docker image.
 
-Install Docker. Then the release build can be created by:
+Install Docker. Create the release build:
 ```
 mix docker.build
 mix docker.release
