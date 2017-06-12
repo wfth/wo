@@ -62,7 +62,9 @@
 <button type="button" class="btn btn-primary">Add</button>
 
 <script type="text/javascript">
-  var sermon_series_uuid = uuid();
+  var sermonSeriesUuid = uuid();
+  var graphicUploadFinished = false;
+  var buyGraphicUploadFinished = false;
 
   AWS.config = new AWS.Config({
     region: 'us-east-1',
@@ -83,7 +85,7 @@
     var upload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: 'wisdomonline-development',
-        Key: "sermon_series/" + sermon_series_uuid + "/" + file.name,
+        Key: "sermon_series/" + sermonSeriesUuid + "/" + file.name,
         Body: file,
         ContentType: file.type,
         ACL: 'public-read'
@@ -93,6 +95,12 @@
     });
 
     return upload;
+  }
+
+  function barrier() {
+    if (graphicUploadFinished && buyGraphicUploadFinished) {
+      $('#new_sermon_series').submit();
+    }
   }
 
   $(':button').on('click', function() {
@@ -105,11 +113,16 @@
     var graphicUpload = createManagedUpload(graphicInput.files[0]);
     var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0]);
     graphicUpload.send(function(err, graphicData) {
+      console.log("graphic upload finished");
       $('#sermon_series_graphic_url').val(graphicData.Location);
-      buyGraphicUpload.send(function(err, buyGraphicData) {
-        $('#sermon_series_buy_graphic_url').val(buyGraphicData.Location);
-        $('#new_sermon_series').submit();
-      });
+      graphicUploadFinished = true;
+      barrier();
+    });
+    buyGraphicUpload.send(function(err, buyGraphicData) {
+      console.log("buy graphic upload finished");
+      $('#sermon_series_buy_graphic_url').val(buyGraphicData.Location);
+      buyGraphicUploadFinished = true;
+      barrier();
     });
   });
 </script>
