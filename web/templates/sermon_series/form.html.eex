@@ -105,9 +105,9 @@
     var graphicUpload = createManagedUpload(graphicInput.files[0]);
     var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0]);
     graphicUpload.send(function(err, graphicData) {
-      $('#sermon_series_graphic_url').val(graphicData.key);
+      $('#sermon_series_graphic_url').val(graphicData.Location);
       buyGraphicUpload.send(function(err, buyGraphicData) {
-        $('#sermon_series_buy_graphic_url').val(buyGraphicData.key);
+        $('#sermon_series_buy_graphic_url').val(buyGraphicData.Location);
         $('#new_sermon_series').submit();
       });
     });
