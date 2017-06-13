@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +10,7 @@
     <title>Hello Wo!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
+    <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
   </head>
 
   <body>
@@ -25,5 +24,9 @@
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>
+      $(document).foundation();
+    </script>
+    <a href="about.html" class="button">Learn More</a>
   </body>
 </html>
