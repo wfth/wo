@@ -1,6 +1,6 @@
 <h2>Listing sermonseries</h2>
 
-<table class="table">
+<table>
   <thead>
     <tr>
       <th>Title</th>
@@ -15,24 +15,24 @@
     </tr>
   </thead>
   <tbody>
-<%= for sermon_series <- @sermonseries do %>
-    <tr>
-      <td><%= sermon_series.title %></td>
-      <td><%= sermon_series.description %></td>
-      <td><%= sermon_series.passages %></td>
-      <td><%= sermon_series.released_on_string %></td>
-      <td><%= sermon_series.graphic_url %></td>
-      <td><%= sermon_series.buy_graphic_url %></td>
-      <td><%= sermon_series.price %></td>
+    <%= for sermon_series <- @sermonseries do %>
+        <tr>
+          <td><%= sermon_series.title %></td>
+          <td><%= sermon_series.description %></td>
+          <td><%= sermon_series.passages %></td>
+          <td><%= sermon_series.released_on_string %></td>
+          <td><%= sermon_series.graphic_url %></td>
+          <td><%= sermon_series.buy_graphic_url %></td>
+          <td><%= sermon_series.price %></td>
 
-      <td class="text-right">
-        <%= link "Show", to: sermon_series_path(@conn, :show, sermon_series), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: sermon_series_path(@conn, :edit, sermon_series), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
+          <td class="text-right">
+            <%= link "Show", to: sermon_series_path(@conn, :show, sermon_series), class: "button" %>
+            <%= link "Edit", to: sermon_series_path(@conn, :edit, sermon_series), class: "button" %>
+            <%= link "Delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"], class: "button alert" %>
+          </td>
+        </tr>
+        <% end %>
   </tbody>
 </table>
 
-<%= link "New sermon series", to: sermon_series_path(@conn, :new) %>
+<%= link "New sermon series", to: sermon_series_path(@conn, :new), class: "button" %>

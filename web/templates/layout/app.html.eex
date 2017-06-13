@@ -18,7 +18,9 @@
     <%= flash_callout_tag(@conn) %>
 
     <main role="main">
-      <%= render @view_module, @view_template, assigns %>
+      <div class="row">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
     </main>
 
     <script>
