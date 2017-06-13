@@ -24,9 +24,5 @@
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <script>
-      $(document).foundation();
-    </script>
-    <a href="about.html" class="button">Learn More</a>
   </body>
 </html>

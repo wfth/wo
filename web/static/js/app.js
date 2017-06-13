@@ -19,3 +19,5 @@ import "foundation-sites"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+$(document).foundation();
