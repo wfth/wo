@@ -3,4 +3,4 @@
 <%= render "form.html", changeset: @changeset,
                         action: sermon_series_sermon_path(@conn, :update, @sermon.sermon_series_id, @sermon) %>
 
-<%= link "Back", to: sermon_series_sermon_path(@conn, :index, @sermon.sermon_series_id) %>
+<%= link "Back", to: sermon_series_sermon_path(@conn, :index, @sermon.sermon_series_id), class: "button" %>

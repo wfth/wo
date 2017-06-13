@@ -26,13 +26,16 @@
       <td><%= sermon.price %></td>
 
       <td class="text-right">
-        <%= link "Show", to: sermon_series_sermon_path(@conn, :show, @sermon_series_id, sermon), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: sermon_series_sermon_path(@conn, :edit, @sermon_series_id, sermon), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: sermon_series_sermon_path(@conn, :delete, @sermon_series_id, sermon), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: sermon_series_sermon_path(@conn, :show, @sermon_series_id, sermon), class: "button" %>
+        <%= link "Edit", to: sermon_series_sermon_path(@conn, :edit, @sermon_series_id, sermon), class: "button" %>
+        <%= link "Delete", to: sermon_series_sermon_path(@conn, :delete, @sermon_series_id, sermon), method: :delete, data: [confirm: "Are you sure?"], class: "button alert" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New sermon", to: sermon_series_sermon_path(@conn, :new, @sermon_series_id) %>
+<div class="button-group">
+  <%= link "New sermon", to: sermon_series_sermon_path(@conn, :new, @sermon_series_id), class: "button" %>
+  <%= link "Back", to: sermon_series_path(@conn, :show, @sermon_series_id), class: "button" %>
+</div>

@@ -91,7 +91,7 @@
     });
   }
 
-  function createManagedUpload(file, progressId) {
+  function createManagedUpload(file, progressMeterId) {
     var upload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: 'wisdomonline-development',
@@ -102,7 +102,7 @@
       }});
 
     upload.on('httpUploadProgress', function (progress) {
-      $('#' + progressId + '-meter').attr('style', 'width: ' + Math.round((progress.loaded / progress.total)*100) + '%');
+      $('#' + progressMeterId).attr('style', 'width: ' + Math.round((progress.loaded / progress.total)*100) + '%');
     });
 
     return upload;
@@ -121,8 +121,8 @@
       return;
     }
 
-    var graphicUpload = createManagedUpload(graphicInput.files[0], "graphic-file-progress");
-    var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0], "buy-graphic-file-progress");
+    var graphicUpload = createManagedUpload(graphicInput.files[0], "graphic-file-progress-meter");
+    var buyGraphicUpload = createManagedUpload(buyGraphicInput.files[0], "buy-graphic-file-progress-meter");
     graphicUpload.send(function(err, graphicData) {
       console.log("graphic upload finished");
       $('#sermon_series_graphic_url').val(graphicData.Location);
