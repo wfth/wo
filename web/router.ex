@@ -19,7 +19,7 @@ defmodule Wo.Router do
     get "/", PageController, :index
     get "/search", SearchController, :index
     post "/search", SearchController, :search
-    resources "/sermon_series", SermonSeriesController do
+    resources "/sermon_series", SermonSeriesController, except: [:show] do
       resources "/sermon", SermonController
     end
   end

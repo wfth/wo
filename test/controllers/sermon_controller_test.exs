@@ -6,7 +6,7 @@ defmodule Wo.SermonControllerTest do
   @invalid_attrs %{title: ""}
 
   setup do
-    sermon_series = insert_sermon_series()
+    sermon_series = insert_sermon_series(@valid_attrs)
     {:ok, conn: build_conn(), sermon_series: sermon_series}
   end
 

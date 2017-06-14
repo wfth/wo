@@ -26,11 +26,6 @@ defmodule Wo.SermonSeriesController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    sermon_series = Repo.get!(SermonSeries, id)
-    render(conn, "show.html", sermon_series: sermon_series)
-  end
-
   def edit(conn, %{"id" => id}) do
     sermon_series = Repo.get!(SermonSeries, id)
     changeset = SermonSeries.changeset(sermon_series)
@@ -45,7 +40,7 @@ defmodule Wo.SermonSeriesController do
       {:ok, sermon_series} ->
         conn
         |> put_flash(:info, "Sermon series updated successfully.")
-        |> redirect(to: sermon_series_path(conn, :show, sermon_series))
+        |> redirect(to: sermon_series_path(conn, :index))
       {:error, changeset} ->
         render(conn, "edit.html", sermon_series: sermon_series, changeset: changeset)
     end

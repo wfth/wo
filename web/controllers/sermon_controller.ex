@@ -5,8 +5,9 @@ defmodule Wo.SermonController do
   alias Wo.SermonSeries
 
   def index(conn, %{"sermon_series_id" => sermon_series_id}) do
-    sermons = Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
-    render(conn, "index.html", sermons: sermons, sermon_series_id: sermon_series_id)
+    sermon_series = Repo.get!(SermonSeries, sermon_series_id)
+    sermons = Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series.id)
+    render(conn, "index.html", sermons: sermons, sermon_series_id: sermon_series.id)
   end
 
   def new(conn, %{"sermon_series_id" => sermon_series_id}) do

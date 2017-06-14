@@ -2,14 +2,8 @@ defmodule Wo.TestHelpers do
   alias Wo.Repo
 
   def insert_sermon_series(attrs \\ %{}) do
-    changes = Map.merge(%{
-      title: "A Sermon Series",
-      description: "A sermon series description.",
-      price: "7.00"
-    }, attrs)
-
     %Wo.SermonSeries{}
-    |> Wo.SermonSeries.changeset(changes)
+    |> Wo.SermonSeries.changeset(attrs)
     |> Repo.insert!()
   end
 
