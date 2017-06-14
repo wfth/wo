@@ -7,28 +7,36 @@
 
   <div class="row">
     <div class="large-6 columns">
-      <%= label f, :title %>
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :title %></div>
+        <div class="float-right"><%= error_tag f, :title %></div>
+      </div>
       <%= text_input f, :title %>
-      <%= error_tag f, :title %>
     </div>
 
     <div class="large-6 columns">
-      <%= label f, :passages %>
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :passages %></div>
+        <div class="float-right"><%= error_tag f, :passages %></div>
+      </div>
       <%= text_input f, :passages %>
-      <%= error_tag f, :passages %>
     </div>
   </div>
 
   <div>
-    <%= label f, :description %>
+    <div class="clearfix">
+      <div class="float-left"><%= label f, :description %></div>
+      <div class="float-right"><%= error_tag f, :description %></div>
+    </div>
     <%= textarea f, :description %>
-    <%= error_tag f, :description %>
   </div>
 
   <div>
-    <%= label f, :price %>
+    <div class="clearfix">
+      <div class="float-left"><%= label f, :price %></div>
+      <div class="float-right"><%= error_tag f, :price %></div>
+    </div>
     <%= number_input f, :price, step: "any" %>
-    <%= error_tag f, :price %>
   </div>
 
   <%= hidden_input f, :audio_url %>
