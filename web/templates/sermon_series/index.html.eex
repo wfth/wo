@@ -1,38 +1,26 @@
-<h2>Listing sermonseries</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Passages</th>
-      <th>Released on</th>
-      <th>Graphic key</th>
-      <th>Buy graphic key</th>
-      <th>Price</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="row">
+  <div class="large-12 medium-12 columns">
+    <h5>Sermon Series <%= link "new", to: sermon_series_path(@conn, :new) %></h5>
     <%= for sermon_series <- @sermonseries do %>
-        <tr>
-          <td><%= sermon_series.title %></td>
-          <td><%= sermon_series.description %></td>
-          <td><%= sermon_series.passages %></td>
-          <td><%= sermon_series.released_on_string %></td>
-          <td><%= sermon_series.graphic_url %></td>
-          <td><%= sermon_series.buy_graphic_url %></td>
-          <td><%= sermon_series.price %></td>
-
-          <td class="text-right">
-            <%= link "Show", to: sermon_series_path(@conn, :show, sermon_series), class: "button" %>
-            <%= link "Edit", to: sermon_series_path(@conn, :edit, sermon_series), class: "button" %>
-            <%= link "Delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"], class: "button alert" %>
-          </td>
-        </tr>
-        <% end %>
-  </tbody>
-</table>
-
-<%= link "New sermon series", to: sermon_series_path(@conn, :new), class: "button" %>
+      <hr />
+      <div class="row">
+        <div class="small-11 columns">
+          <div class="small-2 columns">
+            <%= img_tag sermon_series.graphic_url %>
+            <%= img_tag sermon_series.buy_graphic_url %>
+          </div>
+          <div class="small-10 columns">
+            <h5><%= sermon_series.title %> <%= sermon_series.price %> <%= sermon_series.released_on_string %></h5>
+            <p><%= sermon_series.description %></p>
+            <p><%= sermon_series.passages %></p>
+          </div>
+        </div>
+        <div class="small-1 columns">
+          <%= link "edit", to: sermon_series_path(@conn, :edit, sermon_series) %>
+          <%= link "sermons", to: sermon_series_sermon_path(@conn, :index, sermon_series.id) %>
+          <%= link "delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"] %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

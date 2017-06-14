@@ -1,33 +1,26 @@
-<h2>Search</h2>
-
-<%= form_for @conn, search_path(@conn, :search), [as: :search], fn f -> %>
-
-<div class="form-group">
-  <%= text_input f, :search_term %>
-  <%= submit "Submit", class: "btn btn-primary" %>
-</div>
-
-<% end %>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Passage</th>
-      <th>Rank</th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="row">
+  <div class="large-12 medium-12 columns">
+    <%= form_for @conn, search_path(@conn, :search), [as: :search], fn f -> %>
+      <div class="input-group input-group-rounded">
+        <%= text_input f, :search_term, type: "search", class: "input-group-field" %>
+        <div class="input-group-button">
+          <%= submit "Search", class: "button secondary" %>
+        </div>
+      </div>
+    <% end %>
     <%= for {_sermon, i} <- Enum.with_index(@sermons) do %>
       <% [sermon, rank] = matrix_at([@sermons, @ranks], i) %>
-      <% [title, description, passage] = List.flatten(sermon.rows) %>
-      <tr>
-        <td><%= raw(title) %></td>
-        <td><%= raw(description) %></td>
-        <td><%= raw(passage) %></td>
-        <td><%= rank %></td>
-      </tr>
+      <% [title, description, passages] = List.flatten(sermon.rows) %>
+      <hr />
+      <div class="row">
+        <div class="small-11 columns">
+          <div class="small-12 columns">
+            <h5><%= raw(title) %> (<%= rank %>)</h5>
+            <p><%= raw(description) %></p>
+            <p><%= raw(passages) %></p>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>

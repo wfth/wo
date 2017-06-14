@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Wo!</title>
+    <title>Wisdom for the Heart</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 
     <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
@@ -17,11 +17,17 @@
   <body>
     <%= flash_callout_tag(@conn) %>
 
-    <main role="main">
-      <div class="row">
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Wisdom for the Heart</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
         <%= render @view_module, @view_template, assigns %>
       </div>
-    </main>
+    </div>
 
     <script>
       $(document).foundation();

@@ -1,6 +1,4 @@
-<h2>Edit sermon series</h2>
+<h5>Edit Sermon Series <%= link "cancel", to: sermon_series_path(@conn, :index) %></h5>
 
 <%= render "form.html", changeset: @changeset,
                         action: sermon_series_path(@conn, :update, @sermon_series) %>
-
-<%= link "Back", to: sermon_series_path(@conn, :index), class: "button" %>
