@@ -2,6 +2,7 @@
   <div class="large-12 medium-12 columns">
     <h5>New Sermon Series <%= link "cancel", to: sermon_series_path(@conn, :index) %></h5>
     <%= render "form.html", changeset: @changeset,
-                            action: sermon_series_path(@conn, :create) %>
+        action: sermon_series_path(@conn, :create),
+        sermon_series: @sermon_series %>
   </div>
 </div>

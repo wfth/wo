@@ -7,7 +7,7 @@ defmodule Wo.SermonController do
   def index(conn, %{"sermon_series_id" => sermon_series_id}) do
     sermon_series = Repo.get!(SermonSeries, sermon_series_id)
     sermons = Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series.id)
-    render(conn, "index.html", sermons: sermons, sermon_series_id: sermon_series.id)
+    render(conn, "index.html", sermon_series_id: sermon_series.id, sermons: sermons)
   end
 
   def new(conn, %{"sermon_series_id" => sermon_series_id}) do
@@ -16,7 +16,7 @@ defmodule Wo.SermonController do
       |> build_assoc(:sermons)
       |> Sermon.changeset()
 
-    render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id)
+    render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id, sermon: %Sermon{})
   end
 
   def create(conn, %{"sermon" => sermon_params, "sermon_series_id" => sermon_series_id}) do

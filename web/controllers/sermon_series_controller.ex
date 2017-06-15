@@ -10,7 +10,7 @@ defmodule Wo.SermonSeriesController do
 
   def new(conn, _params) do
     changeset = SermonSeries.changeset(%SermonSeries{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", sermon_series: %SermonSeries{}, changeset: changeset)
   end
 
   def create(conn, %{"sermon_series" => sermon_series_params}) do
