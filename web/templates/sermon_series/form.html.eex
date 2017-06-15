@@ -49,6 +49,7 @@
     </div>
   </div>
 
+  <%= hidden_input f, :uuid %>
   <%= hidden_input f, :graphic_url %>
   <%= hidden_input f, :buy_graphic_url %>
 <% end %>
@@ -90,28 +91,17 @@
 <button type="button" class="button success">Submit</button>
 
 <script type="text/javascript">
-  var sermonSeriesUuid = uuid();
-
   AWS.config = new AWS.Config({
     region: 'us-east-1',
     accessKeyId: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_KEY") %>',
     secretAccessKey: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_SECRET") %>'
   });
 
-  // Stolen from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript.
-  // Has a 1 in 1,000,000 chance of collision.
-  function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-      return v.toString(16);
-    });
-  }
-
   function createManagedUpload(file, progressMeterId) {
     var upload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: 'wisdomonline-development',
-        Key: "sermon_series/" + sermonSeriesUuid + "/" + file.name,
+        Key: "sermon_series/" + "<%= @sermon_series.uuid %>" + "/" + file.name,
         Body: file,
         ContentType: file.type,
         ACL: 'public-read'
@@ -124,6 +114,18 @@
     return upload;
   }
 
+  function deleteExistingFile(kind) {
+    var bucket = new AWS.S3();
+    var key = null;
+    if (kind == "graphic") {
+      key = "<%= key_from_url(@sermon_series.graphic_url) %>";
+    } else {
+      key = "<%= key_from_url(@sermon_series.buy_graphic_url) %>";
+    }
+
+    bucket.deleteObject({Bucket: 'wisdomonline-development', Key: key}, function(err, data) {});
+  }
+
   // kind in {graphic, buy_graphic}
   function uploadFile(kind) {
     var deferred = $.Deferred();
@@ -131,6 +133,7 @@
     if (fileInput.files.length == 0) {
       deferred.resolve();
     } else {
+      deleteExistingFile(kind);
       var managedUpload = createManagedUpload(fileInput.files[0], kind + "_progress_meter");
       managedUpload.send(function(err, data) {
         $("#sermon_series_" + kind + "_url").val(data.Location);
@@ -139,7 +142,7 @@
     }
     return deferred.promise();
   }
-  
+
   $(':button').on('click', function() {
     var graphicPromise = uploadFile('graphic');
     var buyGraphicPromise = uploadFile('buy_graphic');

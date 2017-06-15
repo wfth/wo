@@ -2,6 +2,7 @@ defmodule Wo.SermonSeries do
   use Wo.Web, :model
 
   schema "sermon_series" do
+    field :uuid, :string
     field :title, :string
     field :description, :string
     field :passages, :string
@@ -19,7 +20,7 @@ defmodule Wo.SermonSeries do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :description, :passages, :released_on_string, :graphic_url, :buy_graphic_url, :price])
-    |> validate_required([:title, :description, :passages, :price])
+    |> cast(params, [:uuid, :title, :description, :passages, :released_on_string, :graphic_url, :buy_graphic_url, :price])
+    |> validate_required([:uuid, :title, :description, :passages, :price])
   end
 end

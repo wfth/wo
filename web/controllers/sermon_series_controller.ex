@@ -9,8 +9,9 @@ defmodule Wo.SermonSeriesController do
   end
 
   def new(conn, _params) do
+    uuid = Ecto.UUID.generate()
     changeset = SermonSeries.changeset(%SermonSeries{})
-    render(conn, "new.html", sermon_series: %SermonSeries{}, changeset: changeset)
+    render(conn, "new.html", sermon_series: %SermonSeries{uuid: uuid}, changeset: Ecto.Changeset.put_change(changeset, :uuid, uuid))
   end
 
   def create(conn, %{"sermon_series" => sermon_series_params}) do
@@ -37,7 +38,7 @@ defmodule Wo.SermonSeriesController do
     changeset = SermonSeries.changeset(sermon_series, sermon_series_params)
 
     case Repo.update(changeset) do
-      {:ok, sermon_series} ->
+      {:ok, _sermon_series} ->
         conn
         |> put_flash(:info, "Sermon series updated successfully.")
         |> redirect(to: sermon_series_path(conn, :index))
