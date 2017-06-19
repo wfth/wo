@@ -9,9 +9,8 @@ defmodule Wo.SermonSeriesController do
   end
 
   def new(conn, _params) do
-    uuid = Ecto.UUID.generate()
-    changeset = SermonSeries.changeset(%SermonSeries{})
-    render(conn, "new.html", sermon_series: %SermonSeries{uuid: uuid}, changeset: Ecto.Changeset.put_change(changeset, :uuid, uuid))
+    changeset = SermonSeries.changeset(%SermonSeries{}, %{uuid: Ecto.UUID.generate()})
+    render(conn, "new.html", sermon_series: Ecto.Changeset.apply_changes(changeset), changeset: changeset)
   end
 
   def create(conn, %{"sermon_series" => sermon_series_params}) do
@@ -23,7 +22,7 @@ defmodule Wo.SermonSeriesController do
         |> put_flash(:info, "Sermon series created successfully.")
         |> redirect(to: sermon_series_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", sermon_series: Ecto.Changeset.apply_changes(changeset), changeset: changeset)
     end
   end
 

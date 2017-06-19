@@ -31,7 +31,7 @@ defmodule Wo.SermonController do
         |> put_flash(:info, "Sermon created successfully.")
         |> redirect(to: sermon_series_sermon_path(conn, :index, sermon_series_id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id)
+        render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id, sermon: Ecto.Changeset.apply_changes(changeset))
     end
   end
 
