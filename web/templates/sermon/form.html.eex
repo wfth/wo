@@ -41,6 +41,7 @@
 
   <%= hidden_input f, :audio_url %>
   <%= hidden_input f, :buy_graphic_url %>
+  <%= hidden_input f, :uuid %>
 <% end %>
 
 <form enctype="multipart/form-data">
@@ -80,30 +81,17 @@
 <button type="button" class="button success">Add</button>
 
 <script type="text/javascript">
-  var sermonUuid = uuid();
-  var audioUploadFinished = false;
-  var buyGraphicUploadFinished = false;
-
   AWS.config = new AWS.Config({
     region: 'us-east-1',
     accessKeyId: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_KEY") %>',
     secretAccessKey: '<%= System.get_env("WFTH_PERMISSIONS_AWS_ACCESS_SECRET") %>'
   });
 
-  // Stolen from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript.
-  // Has a 1 in 1,000,000 chance of collision.
-  function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-      return v.toString(16);
-    });
-  }
-
   function createManagedUpload(file, progressMeterId) {
     var upload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: 'wisdomonline-development',
-        Key: "sermons/" + sermonUuid + "/" + file.name,
+        Key: "sermons/" + "<%= @sermon.uuid %>" + "/" + file.name,
         Body: file,
         ContentType: file.type,
         ACL: 'public-read'
@@ -116,7 +104,19 @@
     return upload;
   }
 
-  // kind in {graphic, buy_graphic}
+  function deleteExistingFile(kind) {
+    var bucket = new AWS.S3();
+    var key = null;
+    if (kind == "audio") {
+      key = "<%= key_from_url(@sermon.audio_url) %>";
+    } else {
+      key = "<%= key_from_url(@sermon.buy_graphic_url) %>";
+    }
+
+    bucket.deleteObject({Bucket: 'wisdomonline-development', Key: key}, function(err, data) {});
+  }
+
+  // kind in {audio, buy_graphic}
   function uploadFile(kind) {
     var deferred = $.Deferred();
     var fileInput = document.getElementById(kind);

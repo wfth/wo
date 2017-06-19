@@ -52,6 +52,7 @@ defmodule Wo.Web do
       import Wo.Router.Helpers
       import Wo.ErrorHelpers
       import Wo.Gettext
+      import Wo.TemplateHelpers
     end
   end
 

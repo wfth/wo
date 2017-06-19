@@ -14,9 +14,9 @@ defmodule Wo.SermonController do
     changeset =
       Repo.get_by!(SermonSeries, id: sermon_series_id)
       |> build_assoc(:sermons)
-      |> Sermon.changeset()
+      |> Sermon.changeset(%{uuid: Ecto.UUID.generate()})
 
-    render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id, sermon: %Sermon{})
+    render(conn, "new.html", changeset: changeset, sermon_series_id: sermon_series_id, sermon: Ecto.Changeset.apply_changes(changeset))
   end
 
   def create(conn, %{"sermon" => sermon_params, "sermon_series_id" => sermon_series_id}) do
