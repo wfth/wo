@@ -10,12 +10,20 @@ defmodule Wo.SearchController do
 
     ranks = Enum.reduce(sermon_results.rows, [], fn(r, ranks) -> ranks ++ [Enum.at(r, 2)] end)
     sermons = Enum.reduce(sermon_results.rows, [], fn(r, sermons) ->
-      IO.puts "select ts_headline(title, to_tsquery($1)) as title, ts_headline(description, to_tsquery($1)) as description, ts_headline(passages, to_tsquery($1)) as passage from " <> Enum.at(r, 0) <> " where id = $2"
       {:ok, values} = sql("select ts_headline(title, to_tsquery($1)) as title, ts_headline(description, to_tsquery($1)) as description, ts_headline(passages, to_tsquery($1)) as passage from " <> Enum.at(r, 0) <> " where id = $2", [search_term, Enum.at(r, 1)])
       sermons ++ [values]
     end)
 
-    render(conn, "index.html", sermons: sermons, ranks: ranks)
+    ranked_sermons_list = ranks
+                          |> Enum.with_index
+                          |> Enum.reduce([], fn({rank, i}, acc) ->
+                               acc ++ [{rank, Enum.at(sermons, i)}]
+                             end)
+                          |> Enum.sort(fn({rank1, sermon1}, {rank2, sermon2}) ->
+                               rank1 >= rank2
+                             end)
+
+    render(conn, "index.html", sermons: ranked_sermons_list)
   end
 
   defp sql(raw, params) do

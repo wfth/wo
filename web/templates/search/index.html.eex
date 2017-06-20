@@ -8,8 +8,7 @@
         </div>
       </div>
     <% end %>
-    <%= for {_sermon, i} <- Enum.with_index(@sermons) do %>
-      <% [sermon, rank] = matrix_at([@sermons, @ranks], i) %>
+    <%= for {rank, sermon} <- @sermons do %>
       <% [title, description, passages] = List.flatten(sermon.rows) %>
       <hr />
       <div class="row">
