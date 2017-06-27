@@ -1,4 +1,5 @@
 <section>
   <p><%= link "Sermon Series", to: sermon_series_path(@conn, :index) %></p>
+  <p><%= link "Newsletter", to: page_path(@conn, :newsletter) %></p>
   <p><%= link "Search", to: search_path(@conn, :index) %></p>
 </section>
