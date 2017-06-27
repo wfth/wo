@@ -19,7 +19,7 @@ defmodule Wo.SearchController do
                           |> Enum.reduce([], fn({rank, i}, acc) ->
                                acc ++ [{rank, Enum.at(sermons, i)}]
                              end)
-                          |> Enum.sort(fn({rank1, sermon1}, {rank2, sermon2}) ->
+                          |> Enum.sort(fn({rank1, _sermon1}, {rank2, _sermon2}) ->
                                rank1 >= rank2
                              end)
 
