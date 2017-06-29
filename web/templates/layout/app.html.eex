@@ -12,6 +12,8 @@
 
     <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
     <script type="text/javascript" src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://s3.amazonaws.com/wisdomonline-development/jwplayer.js"></script>
+    <script>jwplayer.key="<%= System.get_env("WFTH_PERMISSIONS_JWPLAYER_LICENSE_KEY") %>";</script>
   </head>
 
   <body>
