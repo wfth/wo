@@ -8,9 +8,9 @@
         </div>
       </div>
     <% end %>
-    <%= for {{rank, sermon}, id} <- Enum.with_index(@sermons) do %>
-      <% if Enum.count(List.flatten(sermon.rows)) == 4, do: [title, description, passages, audio_url] = List.flatten(sermon.rows) %>
-      <% if Enum.count(List.flatten(sermon.rows)) == 3, do: [title, description, passages] = List.flatten(sermon.rows) %>
+    <%= for {{rank, result}, id} <- Enum.with_index(@results) do %>
+      <% if Enum.count(List.flatten(result.rows)) == 4, do: [title, description, passages, audio_url] = List.flatten(result.rows) %>
+      <% if Enum.count(List.flatten(result.rows)) == 3, do: [title, description, passages] = List.flatten(result.rows) %>
       <hr />
       <div class="row">
         <div class="small-11 columns">
