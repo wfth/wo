@@ -4,4 +4,8 @@ defmodule Wo.PageController do
   def index(conn, _params) do
     render conn, "index.html"
   end
+
+  def newsletter(conn, _params) do
+    render conn, "newsletter.html"
+  end
 end

@@ -17,6 +17,7 @@ defmodule Wo.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/newsletter", PageController, :newsletter
     get "/search", SearchController, :index
     post "/search", SearchController, :search
     resources "/sermon_series", SermonSeriesController, except: [:show] do

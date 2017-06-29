@@ -27,15 +27,4 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Release Build
 
-This project implements the approach described at https://shovik.com/blog/8-deploying-phoenix-apps-with-docker to create a production-ready Docker image.
-
-Install Docker. Create the release build:
-```
-mix docker.build
-mix docker.release
-```
-
-See the release image run but note that it cannot connect to any database:
-```
-docker run -it --rm -p 8080:8080 -e PORT=8080 -e HOST=localhost -e DB_HOST=localhost -e DB_NAME=wo_dev -e DB_USER=postgres -e DB_PASSWORD=postgres -e SECRET_KEY_BASE='somethingsecret' wfth/wo:release foreground
-```
+Each push to the git@github.com:wfth/wo.git master branch deploys through the Heroku `wo-ex` pipeline. `wo-ex-stage` is always up-to-date with the master branch code. The migrations do not run automatically. See http://www.phoenixframework.org/docs/heroku for deployment instructions.
