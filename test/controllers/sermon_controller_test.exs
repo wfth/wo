@@ -12,7 +12,7 @@ defmodule Wo.SermonControllerTest do
 
   test "lists all entries on index", %{conn: conn, sermon_series: series} do
     conn = get conn, sermon_series_sermon_path(conn, :index, series)
-    assert html_response(conn, 200) =~ "Listing sermons"
+    assert html_response(conn, 200) =~ "Sermons"
   end
 
   test "renders form for new resources", %{conn: conn, sermon_series: series} do
