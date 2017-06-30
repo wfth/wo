@@ -9,30 +9,7 @@
       </div>
     <% end %>
     <%= for {{rank, result}, id} <- Enum.with_index(@results) do %>
-      <% if Enum.count(List.flatten(result.rows)) == 4, do: [title, description, passages, audio_url] = List.flatten(result.rows) %>
-      <% if Enum.count(List.flatten(result.rows)) == 3, do: [title, description, passages] = List.flatten(result.rows) %>
-      <hr />
-      <div class="row">
-        <div class="small-11 columns">
-          <div class="small-12 columns">
-            <h5><%= raw(title) %> (<%= rank %>)</h5>
-            <p><%= raw(description) %></p>
-            <p><%= raw(passages) %></p>
-            <%= if audio_url do %><div id="sermon_audio_<%= id %>"></div><% end %>
-          </div>
-        </div>
-      </div>
-
-      <%= if audio_url do %>
-        <script type="text/javascript">
-          jwplayer("sermon_audio_<%= id %>").setup({
-            file: "<%= audio_url %>",
-            width: "720",
-            height: "40",
-            preload: "metadata"
-          });
-      </script>
-      <% end %>
+      <%= search_result_html(rank, List.flatten(result.rows), id) %>
     <% end %>
   </div>
 </div>
