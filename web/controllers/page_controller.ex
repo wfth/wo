@@ -19,7 +19,7 @@ defmodule Wo.PageController do
     try do
       sermon_series = Repo.get_by!(Wo.SermonSeries, id: sermon_series_id)
       sermons = Repo.all(from s in Wo.Sermon, where: s.sermon_series_id == ^sermon_series.id)
-      render(conn, "sermon_index.html", sermons: sermons)
+      render(conn, "sermon_index.html", sermon_series: sermon_series, sermons: sermons)
     rescue
       e in [Ecto.NoResultsError, Ecto.Query.CastError] -> render(put_status(conn, :not_found), Wo.ErrorView, "404.html")
     end

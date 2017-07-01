@@ -1,7 +1,19 @@
 <div class="row">
   <div class="large-12 medium-12 columns">
+    <div class="small-3 columns">
+      <%= img_tag @sermon_series.buy_graphic_url %>
+    </div>
+
+    <div class="small-9 columns">
+      <h5><%= @sermon_series.title %></h5>
+      <p><%= @sermon_series.description %></p>
+
+      <%= link "Back", to: page_path(@conn, :series_index) %>
+    </div>
+  </div>
+
+  <div class="large-12 medium-12 columns">
     <h5>Sermons</h5>
-    <%= link "Back", to: page_path(@conn, :series_index) %>
 
     <%= for sermon <- @sermons do %>
       <hr />
