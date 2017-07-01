@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="large-12 medium-12 columns">
+    <h5>Sermons</h5>
+    <%= link "Back", to: page_path(@conn, :series_index) %>
+
+    <%= for sermon <- @sermons do %>
+      <hr />
+
+      <div class="row">
+        <div class="small-10 columns">
+          <h5><%= link sermon.title, to: page_path(@conn, :sermon_show, slug(sermon.id, sermon.title)) %> - $<%= sermon.price %></h5>
+          <small><%= sermon.passages %></small>
+          <p><%= sermon.description %></p>
+        </div>
+        <div class="small-2 columns">
+          <%= img_tag sermon.buy_graphic_url %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
