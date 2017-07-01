@@ -9,7 +9,7 @@
       </div>
     <% end %>
     <%= for {{rank, result}, id} <- Enum.with_index(@results) do %>
-      <%= search_result_html(rank, List.flatten(result.rows), id) %>
+      <%= search_result_html(@conn, rank, List.flatten(result.rows), id) %>
     <% end %>
   </div>
 </div>

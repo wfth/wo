@@ -2,7 +2,7 @@
 <div class="row">
   <div class="small-11 columns">
     <div class="small-12 columns">
-      <h5><%= raw(@title) %> (<%= @rank %>)</h5>
+      <h5><%= link raw(@title), to: page_path(@conn, :sermon_index, slug(@id, @title)) %> (<%= @rank %>)</h5>
       <p><%= raw(@description) %></p>
       <p><%= raw(@passages) %></p>
     </div>

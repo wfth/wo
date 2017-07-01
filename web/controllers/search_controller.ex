@@ -14,7 +14,8 @@ defmodule Wo.SearchController do
 
     ranks = Enum.reduce(search_results.rows, [], fn(r, ranks) -> ranks ++ [Enum.at(r, 2)] end)
     results = Enum.reduce(search_results.rows, [], fn(r, results) ->
-      {:ok, values} = sql("select ts_headline(title, to_tsquery($1)) as title,
+      {:ok, values} = sql("select id,
+                                  ts_headline(title, to_tsquery($1)) as title,
                                   ts_headline(description, to_tsquery($1)) as description,
                                   ts_headline(passages, to_tsquery($1)) as passage"
                                   <> (if Enum.at(r, 0) == "sermons", do: ", audio_url ", else: " ") <> "from "
