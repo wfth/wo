@@ -9,7 +9,7 @@ defmodule Wo.LayoutView do
   end
 
   def nav_link(conn, text, path) do
-    if conn.request_path == path, do: class = "active", else: class = ""
+    class = if conn.request_path == path, do: "active", else: ""
     content_tag(:li, link(text, to: path), class: class)
   end
 end
