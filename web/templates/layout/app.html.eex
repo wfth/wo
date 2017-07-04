@@ -17,13 +17,24 @@
   </head>
 
   <body>
-    <%= flash_callout_tag(@conn) %>
-
-    <div class="row">
-      <div class="large-12 columns">
-        <h1><%= link "Wisdom for the Heart", to: "/" %></h1>
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="menu">
+          <%= nav_link @conn, "WFTH", page_path(@conn, :index) %>
+          <%= nav_link @conn, "Sermon Series", page_path(@conn, :series_index) %>
+          <%= nav_link @conn, "News", page_path(@conn, :newsletter) %>
+        </ul>
       </div>
+
+      <%= form_for @conn, search_path(@conn, :search), [as: :search, class: "top-bar-right"], fn f -> %>
+        <ul class="menu">
+          <li><%= text_input f, :search_term, type: "search", placeholder: "Search sermons & series" %></li>
+          <li><button type="submit" class="button">Search</button></li>
+        </ul>
+      <% end %>
     </div>
+
+    <%= flash_callout_tag(@conn) %>
 
     <div class="row">
       <div class="large-12 columns">

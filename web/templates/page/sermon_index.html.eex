@@ -13,8 +13,6 @@
   </div>
 
   <div class="large-12 medium-12 columns">
-    <h5>Sermons</h5>
-
     <%= for sermon <- @sermons do %>
       <hr />
 

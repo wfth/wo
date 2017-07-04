@@ -7,4 +7,9 @@ defmodule Wo.LayoutView do
   def flash_callout_tag(conn) do
     Enum.reduce([:info, :warn], [], fn(key, acc) -> acc ++ [flash_callout_tag(key, get_flash(conn, key))] end)
   end
+
+  def nav_link(conn, text, path) do
+    if conn.request_path == path, do: class = "active", else: class = ""
+    content_tag(:li, link(text, to: path), class: class)
+  end
 end

@@ -1,13 +1,5 @@
 <div class="row">
   <div class="large-12 medium-12 columns">
-    <%= form_for @conn, search_path(@conn, :search), [as: :search], fn f -> %>
-      <div class="input-group input-group-rounded">
-        <%= text_input f, :search_term, type: "search", class: "input-group-field" %>
-        <div class="input-group-button">
-          <%= submit "Search", class: "button secondary" %>
-        </div>
-      </div>
-    <% end %>
     <%= for {{rank, result}, id} <- Enum.with_index(@results) do %>
       <%= search_result_html(@conn, rank, List.flatten(result.rows), id) %>
     <% end %>

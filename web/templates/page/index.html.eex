@@ -1,6 +1,3 @@
 <section>
-  <p><%= link "Sermon Series (User-facing)", to: page_path(@conn, :series_index) %></p>
-  <p><%= link "Sermon Series (Content Management)", to: sermon_series_path(@conn, :index) %></p>
-  <p><%= link "Newsletter", to: page_path(@conn, :newsletter) %></p>
-  <p><%= link "Search", to: search_path(@conn, :index) %></p>
+  <h1>Welcome to Wisdom for the Heart!</h1>
 </section>
