@@ -19,8 +19,8 @@ defmodule Wo.Router do
     get "/", PageController, :index
     get "/newsletter", PageController, :newsletter
     get "/series", PageController, :series_index
-    get "/series/:slug", PageController, :sermon_index
-    get "/sermon/:slug", PageController, :sermon_show
+    get "/series/:slug", PageRouter, :sermon_index, as: :page
+    get "/sermon/:slug", PageRouter, :sermon_show, as: :page
 
     get "/search", SearchController, :index
     post "/search", SearchController, :search

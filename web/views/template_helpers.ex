@@ -7,13 +7,4 @@ defmodule Wo.TemplateHelpers do
     url_parts -- Enum.take(url_parts, 3)
     |> Enum.join("/")
   end
-
-  def slug(id, title) do
-    "#{id}-" <> (title |>
-      String.downcase |>
-      String.strip |>
-      String.replace(~r/[ :]/, "-") |>
-      String.replace(~r/[^A-Za-z0-9-]/, "") |>
-      String.replace(~r/-+/, "-"))
-  end
 end

@@ -11,7 +11,7 @@
 
       <div id="sermon_audio"></div>
 
-      <%= link "Back", to: page_path(@conn, :sermon_index, slug(@sermon_series.id, @sermon_series.title)) %>
+      <%= link "Back", to: page_path(@conn, :sermon_index, @sermon_series) %>
     </div>
   </div>
 </div>

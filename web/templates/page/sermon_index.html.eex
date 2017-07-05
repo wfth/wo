@@ -18,7 +18,7 @@
 
       <div class="row">
         <div class="small-10 columns">
-          <h5><%= link sermon.title, to: page_path(@conn, :sermon_show, slug(sermon.id, sermon.title)) %> - $<%= sermon.price %></h5>
+          <h5><%= link sermon.title, to: page_path(@conn, :sermon_show, sermon) %> - $<%= sermon.price %></h5>
           <small><%= sermon.passages %></small>
           <p><%= sermon.description %></p>
         </div>

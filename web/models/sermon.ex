@@ -22,4 +22,16 @@ defmodule Wo.Sermon do
     |> cast(params, [:title, :description, :passages, :audio_url, :buy_graphic_url, :price, :uuid])
     |> validate_required([:title, :description, :passages, :price, :uuid])
   end
+
+  defimpl Phoenix.Param, for: Wo.Sermon do
+    def to_param(sermon) do
+      "#{sermon.id}-" <> (sermon.title
+      |> String.downcase
+      |> String.strip
+      |> String.replace(~r/[ :]/, "-")
+      |> String.replace(~r/[^A-Za-z0-9-]/, "")
+      |> String.replace(~r/-+/, "-"))
+      |> String.trim_trailing("-")
+    end
+  end
 end
