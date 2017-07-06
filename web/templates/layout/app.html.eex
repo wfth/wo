@@ -26,9 +26,9 @@
         </ul>
       </div>
 
-      <%= form_for @conn, search_path(@conn, :search), [as: :search, class: "top-bar-right"], fn f -> %>
+      <%= form_for @conn, search_path(@conn, :index), [method: :get, enforce_utf8: false, as: :search, class: "top-bar-right"], fn f -> %>
         <ul class="menu">
-          <li><%= text_input f, :search_term, type: "search", placeholder: "Search sermons & series" %></li>
+          <li><%= text_input f, :q, name: "q", type: "search", placeholder: "Search sermons & series" %></li>
           <li><button type="submit" class="button">Search</button></li>
         </ul>
       <% end %>

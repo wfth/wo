@@ -1,16 +1,12 @@
 defmodule Wo.SearchController do
   use Wo.Web, :controller
 
-  def index(conn, _params) do
-    render(conn, "index.html", results: [])
-  end
-
-  def search(conn, %{"search" => %{"search_term" => search_term}}) do
+  def index(conn, %{"q" => query}) do
     {:ok, search_results} = sql("select document_table,
                                         document_id,
                                         ts_rank(content, keywords) as rank
                                         from search_documents, plainto_tsquery('english', $1) keywords
-                                        where content @@ keywords", [search_term])
+                                        where content @@ keywords", [query])
 
     ranks = Enum.reduce(search_results.rows, [], fn(r, ranks) -> ranks ++ [Enum.at(r, 2)] end)
     results = Enum.reduce(search_results.rows, [], fn(r, results) ->
@@ -21,7 +17,7 @@ defmodule Wo.SearchController do
                                   <> (if Enum.at(r, 0) == "sermons", do: ", audio_url ", else: " ") <> "from "
                                   <> Enum.at(r, 0)
                                   <> " where id = $2",
-                                  [search_term, Enum.at(r, 1)])
+                                  [query, Enum.at(r, 1)])
       results ++ [values]
     end)
 
@@ -35,6 +31,9 @@ defmodule Wo.SearchController do
                              end)
 
     render(conn, "index.html", results: ranked_results_list)
+  end
+  def index(conn, _params) do
+    render(conn, "index.html", results: [])
   end
 
   defp sql(raw, params) do

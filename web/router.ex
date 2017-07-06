@@ -23,7 +23,6 @@ defmodule Wo.Router do
     get "/sermon/:slug", PageRouter, :sermon_show, as: :page
 
     get "/search", SearchController, :index
-    post "/search", SearchController, :search
 
     resources "/sermon_series", SermonSeriesController, except: [:show] do
       resources "/sermon", SermonController
