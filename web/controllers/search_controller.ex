@@ -30,10 +30,7 @@ defmodule Wo.SearchController do
                                rank1 >= rank2
                              end)
 
-    render(conn, "index.html", results: ranked_results_list)
-  end
-  def index(conn, _params) do
-    render(conn, "index.html", results: [])
+    render(conn, "index.html", results: ranked_results_list, page_title: "Search: #{query}")
   end
 
   defp sql(raw, params) do

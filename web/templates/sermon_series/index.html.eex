@@ -1,7 +1,7 @@
 <div class="row">
   <div class="large-12 medium-12 columns">
     <h5>Sermon Series <%= link "new", to: sermon_series_path(@conn, :new) %></h5>
-    <%= for sermon_series <- @sermonseries do %>
+    <%= for sermon_series <- @sermon_series do %>
       <hr />
       <div class="row">
         <div class="small-11 columns">
@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="small-1 columns">
-          <%= link "edit", to: sermon_series_path(@conn, :edit, sermon_series) %>
+          <%= link "edit", to: sermon_series_path(@conn, :edit, sermon_series.id) %>
           <%= link "sermons", to: sermon_series_sermon_path(@conn, :index, sermon_series.id) %>
           <%= link "delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"] %>
         </div>
