@@ -13,6 +13,10 @@
 
       <%= link "Back", to: page_path(@conn, :sermon_index, @sermon_series) %>
     </div>
+
+    <p>
+      <%= @sermon.transcript_text %>
+    </p>
   </div>
 </div>
 

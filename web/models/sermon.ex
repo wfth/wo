@@ -8,6 +8,8 @@ defmodule Wo.Sermon do
     field :passages, :string
     field :audio_url, :string
     field :buy_graphic_url, :string
+    field :transcript_url, :string
+    field :transcript_text, :string
     field :price, :float
     belongs_to :sermon_series, Wo.SermonSeries
 
