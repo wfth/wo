@@ -10,12 +10,13 @@
       <p><%= @sermon.description %></p>
 
       <div id="sermon_audio"></div>
+      <a href="<%= @sermon.transcript_url %>" download="<%= @sermon.title %>">Download Transcript</a>
 
       <%= link "Back", to: page_path(@conn, :sermon_index, @sermon_series) %>
     </div>
 
     <p>
-      <%= @sermon.transcript_text %>
+      <%= raw(@sermon.transcript_text) %>
     </p>
   </div>
 </div>
