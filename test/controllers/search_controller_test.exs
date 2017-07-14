@@ -1,5 +1,5 @@
-defmodule Wo.SearchControllerTest do
-  use Wo.ConnCase
+defmodule Wo.Web.SearchControllerTest do
+  use Wo.Web.ConnCase
 
   test "renders search results", %{conn: conn} do
     conn = get conn, search_path(conn, :index), q: "genesis"

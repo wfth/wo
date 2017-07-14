@@ -1,7 +1,7 @@
-defmodule Wo.SermonSeriesTest do
+defmodule Wo.Web.SermonSeriesTest do
   use Wo.ModelCase
 
-  alias Wo.SermonSeries
+  alias Wo.Web.SermonSeries
 
   @valid_attrs %{buy_graphic_url: "some content", description: "some content", graphic_url: "some content", passages: "some content", price: "120.5", released_on_string: "4-17-2010", title: "some content", uuid: "some content"}
   @invalid_attrs %{}

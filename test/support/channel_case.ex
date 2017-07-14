@@ -1,4 +1,4 @@
-defmodule Wo.ChannelCase do
+defmodule Wo.Web.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule Wo.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Wo.Endpoint
+      @endpoint Wo.Web.Endpoint
     end
   end
 

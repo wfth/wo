@@ -10,10 +10,10 @@ config :wo,
   ecto_repos: [Wo.Repo]
 
 # Configures the endpoint
-config :wo, Wo.Endpoint,
+config :wo, Wo.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "dHfS2wZyVda4sl8ngM5BR8E/aogXnjKXgGA8JOVkGHLcy/xCTn65e8XCq37Sxp+Y",
-  render_errors: [view: Wo.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: Wo.Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Wo.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
