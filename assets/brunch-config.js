@@ -22,7 +22,7 @@ exports.config = {
     stylesheets: {
       joinTo: "css/app.css",
       order: {
-        after: ["assets/css/app.css"] // concat app.css last
+        after: ["css/app.css"] // concat app.css last
       }
     },
     templates: {
@@ -40,7 +40,7 @@ exports.config = {
   // Phoenix paths configuration
   paths: {
     // Dependencies and current project directories to watch
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["static", "css", "scss", "js", "vendor"],
 
     // Where to compile files to
     public: "../priv/static"
@@ -55,9 +55,9 @@ exports.config = {
     sass: {
       options: {
         includePaths: [
-          "assets/node_modules/normalize-scss/sass",
-          "assets/node_modules/foundation-sites/scss",
-          "assets/node_modules/motion-ui/src",
+          "node_modules/normalize-scss/sass",
+          "node_modules/foundation-sites/scss",
+          "node_modules/motion-ui/src",
         ]
       }
     }
