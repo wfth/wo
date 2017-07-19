@@ -1,15 +1,16 @@
-defmodule Wo.Web.SermonSeriesController do
+defmodule Wo.Web.ContentEditor.SermonSeriesController do
   use Wo.Web, :controller
 
-  alias Wo.Web.SermonSeries
+  alias Wo.ContentEditor
+  alias Wo.ContentEditor.SermonSeries
 
   def index(conn, _params) do
-    sermon_series = Repo.all(SermonSeries)
+    sermon_series = ContentEditor.list_sermon_series
     render(conn, "index.html", sermon_series: sermon_series, page_title: "Admin: Sermon Series")
   end
 
   def new(conn, _params) do
-    changeset = SermonSeries.changeset(%SermonSeries{}, %{uuid: Ecto.UUID.generate()})
+    changeset = ContentEditor.change_sermon_series(%SermonSeries{}, %{uuid: Ecto.UUID.generate()})
     render(conn, "new.html", sermon_series: Ecto.Changeset.apply_changes(changeset),
       changeset: changeset, page_title: "Admin: New Sermon Series")
   end

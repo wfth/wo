@@ -1,7 +1,0 @@
-<div class="row">
-  <div class="large-12 medium-12 columns">
-    <%= for {{rank, result}, id} <- Enum.with_index(@results) do %>
-      <%= search_result_html(@conn, rank, List.flatten(result.rows), id) %>
-    <% end %>
-  </div>
-</div>
