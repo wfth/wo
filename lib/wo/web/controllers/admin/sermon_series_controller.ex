@@ -1,4 +1,4 @@
-defmodule Wo.Web.ContentEditor.SermonSeriesController do
+defmodule Wo.Web.Admin.SermonSeriesController do
   use Wo.Web, :controller
 
   alias Wo.ContentEditor

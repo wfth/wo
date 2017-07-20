@@ -1,6 +1,6 @@
 <div class="row">
   <div class="large-12 medium-12 columns">
-    <h5>Sermon Series <%= link "new", to: sermon_series_path(@conn, :new) %></h5>
+    <h5>Sermon Series <%= link "new", to: admin_sermon_series_path(@conn, :new) %></h5>
     <%= for sermon_series <- @sermon_series do %>
       <hr />
       <div class="row">

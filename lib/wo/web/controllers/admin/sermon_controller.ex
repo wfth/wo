@@ -1,8 +1,8 @@
-defmodule Wo.Web.SermonController do
+defmodule Wo.Web.Admin.SermonController do
   use Wo.Web, :controller
 
-  alias Wo.Web.Sermon
-  alias Wo.Web.SermonSeries
+  alias Wo.ContentEditor.SermonSeries
+  alias Wo.ContentEditor.Sermon
 
   def index(conn, %{"sermon_series_id" => sermon_series_id}) do
     sermon_series = Repo.get!(SermonSeries, sermon_series_id)
