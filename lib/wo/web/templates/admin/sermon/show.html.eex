@@ -40,6 +40,6 @@
 </ul>
 
 <div class="button-group">
-  <%= link "Edit", to: sermon_series_sermon_path(@conn, :edit, @sermon.sermon_series_id, @sermon), class: "button" %>
-  <%= link "Back", to: sermon_series_sermon_path(@conn, :index, @sermon.sermon_series_id), class: "button"  %>
+  <%= link "Edit", to: admin_sermon_series_sermon_path(@conn, :edit, @sermon.sermon_series_id, @sermon), class: "button" %>
+  <%= link "Back", to: admin_sermon_series_sermon_path(@conn, :index, @sermon.sermon_series_id), class: "button"  %>
 </div>

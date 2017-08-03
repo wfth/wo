@@ -28,6 +28,8 @@ defmodule Wo.Web.Router do
   scope "/admin", Wo.Web.Admin, as: :admin do
     pipe_through :browser
 
+    get "/", SermonSeriesController, :index
+
     resources "/sermon_series", SermonSeriesController, except: [:show] do
       resources "/sermon", SermonController
     end

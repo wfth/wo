@@ -24,6 +24,6 @@ defmodule Wo.ContentEditor.SermonSeries do
   def changeset(%SermonSeries{} = sermon_series, attrs) do
     sermon_series
     |> cast(attrs, [:uuid, :title, :description, :passages, :released_on_string, :graphic_url, :buy_graphic_url, :price])
-    |> validate_required([:uuid, :title, :description, :passages, :released_on_string, :graphic_url, :buy_graphic_url, :price])
+    |> validate_required([:uuid, :title, :description, :passages, :price])
   end
 end

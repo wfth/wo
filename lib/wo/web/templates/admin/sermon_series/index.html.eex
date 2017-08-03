@@ -17,9 +17,9 @@
           </div>
         </div>
         <div class="small-1 columns">
-          <%= link "edit", to: sermon_series_path(@conn, :edit, sermon_series.id) %>
-          <%= link "sermons", to: sermon_series_sermon_path(@conn, :index, sermon_series.id) %>
-          <%= link "delete", to: sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"] %>
+          <%= link "edit", to: admin_sermon_series_path(@conn, :edit, sermon_series.id) %>
+          <%= link "sermons", to: admin_sermon_series_sermon_path(@conn, :index, sermon_series.id) %>
+          <%= link "delete", to: admin_sermon_series_path(@conn, :delete, sermon_series), method: :delete, data: [confirm: "Are you sure?"] %>
         </div>
       </div>
     <% end %>

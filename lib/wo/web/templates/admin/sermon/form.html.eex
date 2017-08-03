@@ -44,4 +44,4 @@
   <%= hidden_input f, :uuid %>
 <% end %>
 
-<%= render Wo.Web.SermonSeriesView, "file_upload.html", conn: @conn, model: "sermon", data: @sermon, fields: [{"audio", @sermon.audio_url, "audio"}, {"buy_graphic", @sermon.buy_graphic_url, "image"}] %>
+<%= render Wo.Web.Admin.SermonSeriesView, "file_upload.html", conn: @conn, model: "sermon", data: @sermon, fields: [{"audio", @sermon.audio_url, "audio"}, {"buy_graphic", @sermon.buy_graphic_url, "image"}] %>

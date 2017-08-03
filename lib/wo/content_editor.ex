@@ -1,5 +1,6 @@
 defmodule Wo.ContentEditor do
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias Wo.Repo
 
   alias Wo.ContentEditor.SermonSeries
@@ -23,22 +24,22 @@ defmodule Wo.ContentEditor do
     Repo.delete(sermon_series)
   end
 
-  def change_sermon_series(%SermonSeries{} = sermon_series, %{} = attrs) do
-    SermonSeries.changeset(sermon_series, attrs)
+  def change_sermon_series(%SermonSeries{} = sermon_series) do
+    SermonSeries.changeset(sermon_series, %{})
   end
-
 
   alias Wo.ContentEditor.Sermon
 
-  def list_sermons do
-    Repo.all(Sermon)
+  def list_sermons(sermon_series_id) do
+    Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
   end
 
   def get_sermon!(id), do: Repo.get!(Sermon, id)
 
-  def create_sermon(attrs \\ %{}) do
-    %Sermon{}
+  def create_sermon(%Sermon{} = sermon, %SermonSeries{} = sermon_series, attrs \\ %{}) do
+    sermon
     |> Sermon.changeset(attrs)
+    |> put_assoc(:sermon_series, sermon_series)
     |> Repo.insert()
   end
 

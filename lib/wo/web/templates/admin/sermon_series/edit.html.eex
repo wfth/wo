@@ -1,6 +1,6 @@
-<h5>Edit Sermon Series <%= link "cancel", to: sermon_series_path(@conn, :index) %></h5>
+<h5>Edit Sermon Series <%= link "cancel", to: admin_sermon_series_path(@conn, :index) %></h5>
 
 <%= render "form.html", changeset: @changeset,
-    action: sermon_series_path(@conn, :update, @sermon_series),
+    action: admin_sermon_series_path(@conn, :update, @sermon_series),
     conn: @conn,
     sermon_series: @sermon_series %>

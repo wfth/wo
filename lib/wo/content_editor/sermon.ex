@@ -25,6 +25,6 @@ defmodule Wo.ContentEditor.Sermon do
   def changeset(%Sermon{} = sermon, attrs) do
     sermon
     |> cast(attrs, [:uuid, :title, :description, :passages, :audio_url, :buy_graphic_url, :transcript_url, :transcript_text, :price])
-    |> validate_required([:uuid, :title, :description, :passages, :audio_url, :buy_graphic_url, :transcript_url, :transcript_text, :price])
+    |> validate_required([:uuid, :title, :description, :passages, :price])
   end
 end

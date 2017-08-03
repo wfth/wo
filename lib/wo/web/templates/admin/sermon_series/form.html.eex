@@ -54,4 +54,4 @@
   <%= hidden_input f, :buy_graphic_url %>
 <% end %>
 
-<%= render Wo.Web.SermonSeriesView, "file_upload.html", conn: @conn, model: "sermon_series", data: @sermon_series, fields: [{"graphic", @sermon_series.graphic_url, "image"}, {"buy_graphic", @sermon_series.buy_graphic_url, "image"}] %>
+<%= render Wo.Web.Admin.SermonSeriesView, "file_upload.html", conn: @conn, model: "sermon_series", data: @sermon_series, fields: [{"graphic", @sermon_series.graphic_url, "image"}, {"buy_graphic", @sermon_series.buy_graphic_url, "image"}] %>
