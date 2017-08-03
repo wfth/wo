@@ -1,10 +1,10 @@
-defmodule Wo.ContentEditor.Sermon do
+defmodule Wo.Resource.Sermon do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias Wo.ContentEditor.Sermon
-  alias Wo.ContentEditor.SermonSeries
+  alias Wo.Resource.Sermon
+  alias Wo.Resource.SermonSeries
 
   schema "sermons" do
     field :audio_url, :string

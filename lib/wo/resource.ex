@@ -1,9 +1,9 @@
-defmodule Wo.ContentEditor do
+defmodule Wo.Resource do
   import Ecto.Query, warn: false
   import Ecto.Changeset
   alias Wo.Repo
 
-  alias Wo.ContentEditor.SermonSeries
+  alias Wo.Resource.SermonSeries
 
   def list_sermon_series, do: Repo.all(SermonSeries)
   def get_sermon_series!(id), do: Repo.get!(SermonSeries, id)
@@ -28,7 +28,7 @@ defmodule Wo.ContentEditor do
     SermonSeries.changeset(sermon_series, %{})
   end
 
-  alias Wo.ContentEditor.Sermon
+  alias Wo.Resource.Sermon
 
   def list_sermons(sermon_series_id) do
     Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)

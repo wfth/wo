@@ -1,4 +1,4 @@
-defmodule Wo.ContentBrowser.SearchDocument do
+defmodule Wo.Resource.SearchDocument do
   use Ecto.Schema
 
   schema "search_documents" do

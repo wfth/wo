@@ -1,22 +1,22 @@
 defmodule Wo.Web.Admin.SermonSeriesController do
   use Wo.Web, :controller
 
-  alias Wo.ContentEditor
-  alias Wo.ContentEditor.SermonSeries
+  alias Wo.Resource
+  alias Wo.Resource.SermonSeries
 
   def index(conn, _params) do
-    sermon_series = ContentEditor.list_sermon_series
+    sermon_series = Resource.list_sermon_series
     render(conn, "index.html", sermon_series: sermon_series, page_title: "Admin: Sermon Series")
   end
 
   def new(conn, _params) do
-    changeset = ContentEditor.change_sermon_series(%SermonSeries{uuid: Ecto.UUID.generate()})
+    changeset = Resource.change_sermon_series(%SermonSeries{uuid: Ecto.UUID.generate()})
     render(conn, "new.html", sermon_series: Ecto.Changeset.apply_changes(changeset),
       changeset: changeset, page_title: "Admin: New Sermon Series")
   end
 
   def create(conn, %{"sermon_series" => sermon_series_params}) do
-    case ContentEditor.create_sermon_series(sermon_series_params) do
+    case Resource.create_sermon_series(sermon_series_params) do
       {:ok, _sermon_series} ->
         conn
         |> put_flash(:info, "Sermon series created successfully.")
@@ -28,15 +28,15 @@ defmodule Wo.Web.Admin.SermonSeriesController do
   end
 
   def edit(conn, %{"id" => id}) do
-    sermon_series = ContentEditor.get_sermon_series!(id)
-    changeset = ContentEditor.change_sermon_series(sermon_series)
+    sermon_series = Resource.get_sermon_series!(id)
+    changeset = Resource.change_sermon_series(sermon_series)
     render(conn, "edit.html", sermon_series: sermon_series, changeset: changeset,
       page_title: "Admin: Edit #{sermon_series.title}")
   end
 
   def update(conn, %{"id" => id, "sermon_series" => sermon_series_params}) do
-    sermon_series = ContentEditor.get_sermon_series!(id)
-    case ContentEditor.update_sermon_series(sermon_series, sermon_series_params) do
+    sermon_series = Resource.get_sermon_series!(id)
+    case Resource.update_sermon_series(sermon_series, sermon_series_params) do
       {:ok, _sermon_series} ->
         conn
         |> put_flash(:info, "Sermon series updated successfully.")
@@ -48,8 +48,8 @@ defmodule Wo.Web.Admin.SermonSeriesController do
   end
 
   def delete(conn, %{"id" => id}) do
-    sermon_series = ContentEditor.get_sermon_series!(id)
-    ContentEditor.delete_sermon_series(sermon_series)
+    sermon_series = Resource.get_sermon_series!(id)
+    Resource.delete_sermon_series(sermon_series)
 
     conn
     |> put_flash(:info, "Sermon series deleted successfully.")
