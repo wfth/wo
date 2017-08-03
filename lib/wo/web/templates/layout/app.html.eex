@@ -20,9 +20,9 @@
     <div class="top-bar">
       <div class="top-bar-left">
         <ul class="menu">
-          <%= nav_link @conn, "WFTH", page_path(@conn, :index) %>
-          <%= nav_link @conn, "Sermon Series", page_path(@conn, :series_index) %>
-          <%= nav_link @conn, "News", page_path(@conn, :newsletter) %>
+          <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
+          <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
+          <%= nav_link @conn, "News", "nowhere" %>
         </ul>
       </div>
 

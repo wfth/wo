@@ -9,20 +9,17 @@ defmodule Wo.Web.Router do
     plug :put_secure_browser_headers
   end
 
-  scope "/", Wo.Web do
+  scope "/", Wo.Web.Visitor do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
-    get "/newsletter", PageController, :newsletter
-    get "/series", PageController, :series_index
-    get "/series/:slug", PageRouter, :sermon_index, as: :page
-    get "/sermon/:slug", PageRouter, :sermon_show, as: :page
+    get "/", HomeController, :index
+
+    get "/series", SermonSeriesController, :index
+    get "/series/:slug", SermonSeriesController, :show
+
+    get "/sermon/:slug", SermonController, :show
 
     get "/search", SearchController, :index
-
-    resources "/sermon_series", SermonSeriesController, except: [:show] do
-      resources "/sermon", SermonController
-    end
   end
 
   scope "/admin", Wo.Web.Admin, as: :admin do
