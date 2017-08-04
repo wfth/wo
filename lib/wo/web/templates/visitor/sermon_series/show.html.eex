@@ -5,6 +5,7 @@
         <h5><%= @sermon_series.title %> - $<%= @sermon_series.price %></h5>
         <small><%= @sermon_series.released_on_string %></small>
         <p><%= @sermon_series.description %></p>
+        <p><%= link "Back", to: sermon_series_path(@conn, :index) %></p>
       </div>
       <div class="small-3 columns">
         <%= img_tag @sermon_series.graphic_url %>
@@ -16,7 +17,7 @@
 
     <div class="row">
       <div class="small-9 columns">
-        <h6><%= link sermon.title, to: sermon_path(@conn, :show, sermon.id) %></h6>
+        <h6><%= link sermon.title, to: sermon_path(@conn, :show, %Wo.Resource.Slug{resource: sermon}) %></h6>
         <p><%= sermon.description %></p>
       </div>
       <div class="small-3 columns">

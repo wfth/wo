@@ -5,8 +5,13 @@ defmodule Wo.Web.Visitor.SermonController do
   alias Wo.Resource.SermonSeries
   alias Wo.Resource.Sermon
 
-  def show(conn, %{"slug" => id}) do
-    sermon = Resource.get_sermon!(id)
-    render(conn, "show.html", sermon: sermon)
+  import Wo.Web.Visitor.SlugHelper
+
+  plug :extract_id_from_slug when action in [:show]
+
+  def show(conn, _params) do
+    sermon = Resource.get_sermon!(conn.assigns[:id])
+    sermon_series = Resource.get_sermon_series!(sermon.sermon_series_id)
+    render(conn, "show.html", sermon: sermon, sermon_series: sermon_series)
   end
 end

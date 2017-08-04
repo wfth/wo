@@ -4,6 +4,7 @@
       <div class="small-9 columns">
         <h5><%= @sermon.title %> - $<%= @sermon.price %></h5>
         <p><%= @sermon.description %></p>
+        <p><%= link "Back", to: sermon_series_path(@conn, :show, %Wo.Resource.Slug{resource: @sermon_series}) %></p>
       </div>
       <div class="small-3 columns">
         <%= img_tag @sermon.buy_graphic_url %>
