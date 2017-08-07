@@ -20,6 +20,8 @@ defmodule Wo.Web.Router do
     get "/sermon/:slug", SermonController, :show
 
     get "/search", SearchController, :index
+
+    get "/newsletter", NewsletterController, :signup
   end
 
   scope "/admin", Wo.Web.Admin, as: :admin do

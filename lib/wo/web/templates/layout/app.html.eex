@@ -22,7 +22,7 @@
         <ul class="menu">
           <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
           <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
-          <%= nav_link @conn, "News", "nowhere" %>
+          <%= nav_link @conn, "News", newsletter_path(@conn, :signup) %>
         </ul>
       </div>
 
