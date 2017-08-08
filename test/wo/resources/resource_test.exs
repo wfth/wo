@@ -85,22 +85,23 @@ defmodule Wo.ResourceTest do
     @invalid_attrs %{audio_url: nil, buy_graphic_url: nil, description: nil, passages: nil, price: nil, title: nil, transcript_text: nil, transcript_url: nil, uuid: nil}
 
     def sermon_fixture(attrs \\ %{}) do
+      sermon_series = sermon_series_fixture()
       {:ok, sermon} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Resource.create_sermon()
+        |> Resource.create_sermon(sermon_series)
 
       sermon
     end
 
     test "list_sermons/0 returns all sermons" do
       sermon = sermon_fixture()
-      assert Resource.list_sermons() == [sermon]
+      assert Resource.preload(Resource.list_sermons(sermon.sermon_series.id), :sermon_series) == [sermon]
     end
 
     test "get_sermon!/1 returns the sermon with given id" do
       sermon = sermon_fixture()
-      assert Resource.get_sermon!(sermon.id) == sermon
+      assert Resource.get_sermon!(sermon.id) |> Resource.preload(:sermon_series) == sermon
     end
 
     test "create_sermon/1 with valid data creates a sermon" do
@@ -138,7 +139,7 @@ defmodule Wo.ResourceTest do
     test "update_sermon/2 with invalid data returns error changeset" do
       sermon = sermon_fixture()
       assert {:error, %Ecto.Changeset{}} = Resource.update_sermon(sermon, @invalid_attrs)
-      assert sermon == Resource.get_sermon!(sermon.id)
+      assert sermon == Resource.get_sermon!(sermon.id) |> Resource.preload(:sermon_series)
     end
 
     test "delete_sermon/1 deletes the sermon" do

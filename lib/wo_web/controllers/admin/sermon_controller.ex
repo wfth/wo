@@ -22,7 +22,7 @@ defmodule WoWeb.Admin.SermonController do
   def create(conn, %{"sermon" => sermon_params, "sermon_series_id" => sermon_series_id}) do
     sermon_series = Resource.get_sermon_series!(sermon_series_id)
 
-    case Resource.create_sermon(%Sermon{}, sermon_series, sermon_params) do
+    case Resource.create_sermon(sermon_params, sermon_series) do
       {:ok, _sermon} ->
         conn
         |> put_flash(:info, "Sermon created successfully.")

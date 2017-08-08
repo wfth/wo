@@ -34,9 +34,13 @@ defmodule Wo.Resource do
     Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
   end
 
+  def preload(struct, association) when is_atom(association) do
+    Repo.preload(struct, association)
+  end
+
   def get_sermon!(id), do: Repo.get!(Sermon, id)
 
-  def create_sermon(%Sermon{} = sermon, %SermonSeries{} = sermon_series, attrs \\ %{}) do
+  def create_sermon(attrs \\ %{}, %SermonSeries{} = sermon_series \\ %SermonSeries{}, %Sermon{} = sermon \\ %Sermon{}) do
     sermon
     |> Sermon.changeset(attrs)
     |> put_assoc(:sermon_series, sermon_series)
