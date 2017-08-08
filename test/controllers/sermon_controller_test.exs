@@ -1,7 +1,7 @@
-defmodule Wo.Web.SermonControllerTest do
-  use Wo.Web.ConnCase
+defmodule WoWeb.SermonControllerTest do
+  use WoWeb.ConnCase
 
-  alias Wo.Web.Sermon
+  alias WoWeb.Sermon
   @valid_attrs %{description: "some content", passages: "some content", price: 120.5, title: "some content", uuid: "some content"}
   @invalid_attrs %{title: ""}
 

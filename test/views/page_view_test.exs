@@ -1,3 +1,3 @@
-defmodule Wo.Web.PageViewTest do
-  use Wo.Web.ConnCase, async: true
+defmodule WoWeb.PageViewTest do
+  use WoWeb.ConnCase, async: true
 end
