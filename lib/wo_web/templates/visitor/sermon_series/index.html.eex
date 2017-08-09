@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="large-12 medium-12 columns">
+    <h1>Sermon Series</h1>
+
+    <%= for series <- @sermon_series do %>
+      <hr />
+
+      <div class="row">
+        <div class="small-9 columns">
+          <h5><%= link series.title, to: sermon_series_path(@conn, :show, %Wo.Resource.Slug{resource: series}) %> - $<%= series.price %></h5>
+          <small><%= series.released_on_string %></small>
+          <p><%= series.description %></p>
+        </div>
+        <div class="small-3 columns">
+          <%= img_tag series.graphic_url %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

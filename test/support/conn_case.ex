@@ -1,4 +1,4 @@
-defmodule Wo.Web.ConnCase do
+defmodule WoWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,11 +25,11 @@ defmodule Wo.Web.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Wo.Web.Router.Helpers
+      import WoWeb.Router.Helpers
       import Wo.TestHelpers
 
       # The default endpoint for testing
-      @endpoint Wo.Web.Endpoint
+      @endpoint WoWeb.Endpoint
     end
   end
 

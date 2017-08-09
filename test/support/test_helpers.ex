@@ -2,8 +2,8 @@ defmodule Wo.TestHelpers do
   alias Wo.Repo
 
   def insert_sermon_series(attrs \\ %{}) do
-    %Wo.Web.SermonSeries{}
-    |> Wo.Web.SermonSeries.changeset(attrs)
+    %Wo.Resource.SermonSeries{}
+    |> Wo.Resource.SermonSeries.changeset(attrs)
     |> Repo.insert!()
   end
 

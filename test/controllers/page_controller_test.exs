@@ -1,5 +1,5 @@
-defmodule Wo.Web.PageControllerTest do
-  use Wo.Web.ConnCase
+defmodule WoWeb.PageControllerTest do
+  use WoWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

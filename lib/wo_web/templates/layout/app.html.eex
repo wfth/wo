@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><%= assigns[:page_title] || "Wisdom for the Heart" %></title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.21.0.min.js"></script>
+    <script type="text/javascript" src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://s3.amazonaws.com/wisdomonline-development/jwplayer.js"></script>
+    <script>jwplayer.key="<%= System.get_env("WFTH_PERMISSIONS_JWPLAYER_LICENSE_KEY") %>";</script>
+  </head>
+
+  <body>
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="menu">
+          <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
+          <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
+          <%= nav_link @conn, "News", newsletter_path(@conn, :signup) %>
+        </ul>
+      </div>
+
+      <%= form_for @conn, search_path(@conn, :index), [method: :get, enforce_utf8: false, as: :search, class: "top-bar-right"], fn f -> %>
+        <ul class="menu">
+          <li><%= text_input f, :q, name: "q", type: "search", placeholder: "Search sermons & series" %></li>
+          <li><button type="submit" class="button">Search</button></li>
+        </ul>
+      <% end %>
+    </div>
+
+    <%= flash_callout_tag(@conn) %>
+
+    <div class="row">
+      <div class="large-12 columns">
+        <%= render @view_module, @view_template, assigns %>
+      </div>
+    </div>
+
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>
