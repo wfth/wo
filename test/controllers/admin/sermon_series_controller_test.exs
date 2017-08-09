@@ -1,4 +1,4 @@
-defmodule WoWeb.SermonSeriesControllerTest do
+defmodule WoWeb.AdminSermonSeriesControllerTest do
   use WoWeb.ConnCase
 
   alias Wo.Resource.SermonSeries

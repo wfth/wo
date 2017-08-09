@@ -21,10 +21,4 @@ defmodule Wo.DataCase do
 
     :ok
   end
-
-  def errors_on(struct, data) do
-    struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&Wo.ErrorHelpers.translate_error/1)
-    |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
-  end
 end
