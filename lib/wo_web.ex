@@ -54,6 +54,7 @@ defmodule WoWeb do
       import WoWeb.ErrorHelpers
       import WoWeb.Gettext
       import WoWeb.TemplateHelpers
+      import Wo.Account.Session, only: [current_user: 1, logged_in?: 1]
     end
   end
 

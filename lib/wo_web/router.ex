@@ -28,6 +28,9 @@ defmodule WoWeb.Router do
     pipe_through :browser
 
     get "/", SermonSeriesController, :index
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
 
     resources "/sermon_series", SermonSeriesController, except: [:show] do
       resources "/sermon", SermonController

@@ -19,8 +19,16 @@
   <body>
     <div class="top-bar">
       <div class="top-bar-left">
-        <ul class="menu">
+        <ul class="dropdown menu" data-dropdown-menu>
           <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
+          <%= if logged_in?(@conn) do %>
+            <li>
+              Account
+              <ul class="menu">
+                <li><%= link "Logout", to: admin_session_path(@conn, :delete), method: :delete %></li>
+              </ul>
+            </li>
+          <% end %>
           <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
           <%= nav_link @conn, "News", newsletter_path(@conn, :signup) %>
         </ul>
