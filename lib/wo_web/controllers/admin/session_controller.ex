@@ -6,7 +6,7 @@ defmodule WoWeb.Admin.SessionController do
   end
 
   def create(conn, %{"session" => session_params}) do
-    case Wo.Account.Session.login(session_params, Wo.Repo) do
+    case Wo.Account.Session.login(session_params) do
       {:ok, administrator} ->
         conn
         |> put_session(:current_administrator, administrator.id)

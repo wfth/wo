@@ -1,8 +1,9 @@
 defmodule Wo.Account.Session do
-  alias Wo.Account.Administrator
+  alias Wo.Account
+  alias Plug.Conn
 
-  def login(params, repo) do
-    administrator = repo.get_by(Administrator, email: String.downcase(params["email"]))
+  def login(params) do
+    administrator = Account.get_administrator_by_email!(String.downcase(params["email"]))
     case authenticate(administrator, params["password"]) do
       true -> {:ok, administrator}
       _    -> :error
@@ -17,8 +18,8 @@ defmodule Wo.Account.Session do
   end
 
   def current_user(conn) do
-    id = Plug.Conn.get_session(conn, :current_administrator)
-    if id, do: Wo.Repo.get(Administrator, id)
+    id = Conn.get_session(conn, :current_administrator)
+    if id, do: Account.get_administrator!(id)
   end
 
   def logged_in?(conn), do: !!current_user(conn)
