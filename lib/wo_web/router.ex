@@ -9,6 +9,10 @@ defmodule WoWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :authenticated do
+    plug WoWeb.Plug.Authenticate
+  end
+
   scope "/", WoWeb.Visitor do
     pipe_through :browser # Use the default browser stack
 
@@ -25,11 +29,16 @@ defmodule WoWeb.Router do
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do
-    pipe_through :browser
+    pipe_through [:browser]
 
-    get "/", SermonSeriesController, :index
     get "/login", SessionController, :new
     post "/login", SessionController, :create
+  end
+
+  scope "/admin", WoWeb.Admin, as: :admin do
+    pipe_through [:browser, :authenticated]
+
+    get "/", SermonSeriesController, :index
     delete "/logout", SessionController, :delete
 
     resources "/sermon_series", SermonSeriesController, except: [:show] do
