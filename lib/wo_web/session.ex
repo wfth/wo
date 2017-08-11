@@ -40,7 +40,7 @@ defmodule WoWeb.Session do
   def expired?(conn) do
     session_expiration = get_session(conn, :expires_at)
     case Timex.parse(session_expiration, "%FT%T%:z", :strftime) do
-      {:ok, expires_at} -> Timex.after?(Timex.now, Timex.parse!(session_expiration, "%FT%T%:z", :strftime))
+      {:ok, expires_at} -> Timex.after?(Timex.now, expires_at)
       {:error, _} -> true
     end
   end

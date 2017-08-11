@@ -2,8 +2,6 @@ defmodule WoWeb.Visitor.SermonController do
   use WoWeb, :controller
 
   alias Wo.Resource
-  alias Wo.Resource.SermonSeries
-  alias Wo.Resource.Sermon
 
   import WoWeb.Visitor.SlugHelper
 

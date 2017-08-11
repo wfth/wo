@@ -1,6 +1,4 @@
 defmodule WoWeb.Plug.RenewSession do
-  import Plug.Conn
-
   alias WoWeb.Session
 
   def init(opts), do: opts
