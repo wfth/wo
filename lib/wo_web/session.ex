@@ -1,4 +1,4 @@
-defmodule Wo.Account.Session do
+defmodule WoWeb.Session do
   alias Wo.Account
   import Plug.Conn
 
@@ -39,7 +39,10 @@ defmodule Wo.Account.Session do
 
   def session_expired?(conn) do
     session_expiration = get_session(conn, :expires_at)
-    Timex.after?(Timex.now, Timex.parse!(session_expiration, "%FT%T%:z", :strftime))
+    case Timex.parse(session_expiration, "%FT%T%:z", :strftime) do
+      {:ok, expires_at} -> Timex.after?(Timex.now, Timex.parse!(session_expiration, "%FT%T%:z", :strftime))
+      {:error, _} -> true
+    end
   end
 
   defp expires_at do

@@ -2,7 +2,7 @@ defmodule WoWeb.Plug.Authorize do
   import Plug.Conn
   import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
 
-  alias Wo.Account.Session
+  alias WoWeb.Session
 
   def init(opts), do: opts
 

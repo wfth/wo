@@ -1,6 +1,6 @@
 defmodule WoWeb.Admin.SessionController do
   use WoWeb, :controller
-  alias Wo.Account.Session
+  alias WoWeb.Session
 
   plug :ensure_logged_out when not action in [:delete]
 
