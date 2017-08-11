@@ -1,13 +1,22 @@
 defmodule Wo.Account.Session do
   alias Wo.Account
-  alias Plug.Conn
+  import Plug.Conn
 
-  def login(params) do
+  def login(conn, params) do
     administrator = Account.get_administrator_by_email!(String.downcase(params["email"]))
-    case authenticate(administrator, params["password"]) do
-      true -> {:ok, administrator}
-      _    -> :error
+    if authenticate(administrator, params["password"]) do
+      {:ok, conn
+            |> put_session(:current_administrator, administrator.id)
+            |> renew_session()}
+    else
+      {:error, conn}
     end
+  end
+
+  def logout(conn) do
+    conn
+    |> delete_session(:current_administrator)
+    |> delete_session(:expires_at)
   end
 
   def authenticate(administrator, password) do
@@ -17,10 +26,23 @@ defmodule Wo.Account.Session do
     end
   end
 
+  def renew_session(conn) do
+    put_session(conn, :expires_at, expires_at())
+  end
+
   def current_user(conn) do
-    id = Conn.get_session(conn, :current_administrator)
+    id = get_session(conn, :current_administrator)
     if id, do: Account.get_administrator!(id)
   end
 
   def logged_in?(conn), do: !!current_user(conn)
+
+  def session_expired?(conn) do
+    session_expiration = get_session(conn, :expires_at)
+    Timex.after?(Timex.now, Timex.parse!(session_expiration, "%FT%T%:z", :strftime))
+  end
+
+  defp expires_at do
+    Timex.now |> Timex.shift(hours: 1) |> Timex.format!("%FT%T%:z", :strftime)
+  end
 end

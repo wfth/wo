@@ -7,10 +7,11 @@ defmodule WoWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug WoWeb.Plug.RenewSession
   end
 
-  pipeline :authenticated do
-    plug WoWeb.Plug.Authenticate
+  pipeline :authorized do
+    plug WoWeb.Plug.Authorize
   end
 
   scope "/", WoWeb.Visitor do
@@ -36,7 +37,7 @@ defmodule WoWeb.Router do
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do
-    pipe_through [:browser, :authenticated]
+    pipe_through [:browser, :authorized]
 
     get "/", SermonSeriesController, :index
     delete "/logout", SessionController, :delete
