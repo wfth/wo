@@ -8,8 +8,8 @@ defmodule WoWeb.Plug.Authorize do
 
   def call(conn, _opts) do
     cond do
-      Session.logged_in?(conn) && !Session.session_expired?(conn) -> conn
-      Session.session_expired?(conn) ->
+      Session.logged_in?(conn) && !Session.expired?(conn) -> conn
+      Session.expired?(conn) ->
         Session.logout(conn)
         |> put_flash(:error, "Your session has expired. Please log in again.")
         |> redirect(to: "/admin/login")

@@ -30,14 +30,14 @@ defmodule WoWeb.Session do
     put_session(conn, :expires_at, expires_at())
   end
 
-  def current_user(conn) do
+  def administrator(conn) do
     id = get_session(conn, :current_administrator)
     if id, do: Account.get_administrator!(id)
   end
 
-  def logged_in?(conn), do: !!current_user(conn)
+  def logged_in?(conn), do: !!administrator(conn)
 
-  def session_expired?(conn) do
+  def expired?(conn) do
     session_expiration = get_session(conn, :expires_at)
     case Timex.parse(session_expiration, "%FT%T%:z", :strftime) do
       {:ok, expires_at} -> Timex.after?(Timex.now, Timex.parse!(session_expiration, "%FT%T%:z", :strftime))
