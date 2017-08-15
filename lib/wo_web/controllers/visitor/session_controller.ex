@@ -1,7 +1,7 @@
-defmodule WoWeb.Admin.SessionController do
+defmodule WoWeb.Visitor.SessionController do
   use WoWeb, :controller
   alias WoWeb.Session
-  alias Wo.Account.Administrator
+  alias Wo.Account.Visitor
 
   plug :ensure_logged_out when not action in [:delete]
 
@@ -10,11 +10,11 @@ defmodule WoWeb.Admin.SessionController do
   end
 
   def create(conn, %{"session" => session_params}) do
-    case Session.login(conn, Administrator, session_params) do
+    case Session.login(conn, Visitor, session_params) do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "Successfully logged in!")
-        |> redirect(to: "/admin")
+        |> redirect(to: "/")
       {:error, conn} ->
         conn
         |> put_flash(:info, "Wrong email or password")

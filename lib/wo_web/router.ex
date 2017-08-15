@@ -27,10 +27,17 @@ defmodule WoWeb.Router do
     get "/search", SearchController, :index
 
     get "/newsletter", NewsletterController, :signup
+
+    get "/register", VisitorController, :new
+    post "/register", VisitorController, :create
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do
-    pipe_through [:browser]
+    pipe_through :browser
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create

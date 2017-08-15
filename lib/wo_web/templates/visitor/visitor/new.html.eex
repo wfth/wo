@@ -1,0 +1,37 @@
+<%= form_for @conn, visitor_path(@conn, :create), [as: :visitor], fn f -> %>
+  <div class="row">
+    <div class="large-6 columns">
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :first_name %></div>
+        <div class="float-right"><%= error_tag f, :first_name %></div>
+      </div>
+      <%= text_input f, :first_name %>
+    </div>
+
+    <div class="large-6 columns">
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :last_name %></div>
+        <div class="float-right"><%= error_tag f, :last_name %></div>
+      </div>
+      <%= text_input f, :last_name %>
+    </div>
+
+    <div class="large-6 columns">
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :email %></div>
+        <div class="float-right"><%= error_tag f, :email %></div>
+      </div>
+      <%= text_input f, :email %>
+    </div>
+
+    <div class="large-6 columns">
+      <div class="clearfix">
+        <div class="float-left"><%= label f, :password %></div>
+        <div class="float-right"><%= error_tag f, :password %></div>
+      </div>
+      <%= password_input f, :password %>
+    </div>
+  </div>
+
+  <%= submit "Create Account", class: "button success" %>
+<% end %>

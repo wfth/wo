@@ -2,11 +2,17 @@ defmodule WoWeb.Session do
   alias Wo.Account
   import Plug.Conn
 
-  def login(conn, params) do
-    administrator = Account.get_administrator_by_email!(String.downcase(params["email"]))
-    if authenticate(administrator, params["password"]) do
+  alias Wo.Account.Administrator
+  alias Wo.Account.Visitor
+
+  def login(conn, type, params) do
+    if !!logged_in_user_type(conn), do: {:error, conn}
+
+    user = Account.get_user_by_email(type, String.downcase(params["email"]))
+    if authenticate(user, params["password"]) do
       {:ok, conn
-            |> put_session(:current_administrator, administrator.id)
+            |> put_session(:current_user, user.id)
+            |> put_session(:user_type, type)
             |> renew_session()}
     else
       {:error, conn}
@@ -15,14 +21,15 @@ defmodule WoWeb.Session do
 
   def logout(conn) do
     conn
-    |> delete_session(:current_administrator)
+    |> delete_session(:current_user)
     |> delete_session(:expires_at)
+    |> delete_session(:user_type)
   end
 
-  def authenticate(administrator, password) do
-    case administrator do
+  def authenticate(user, password) do
+    case user do
       nil -> false
-      _   -> Comeonin.Bcrypt.checkpw(password, administrator.crypted_password)
+      _   -> Comeonin.Bcrypt.checkpw(password, user.crypted_password)
     end
   end
 
@@ -30,16 +37,21 @@ defmodule WoWeb.Session do
     put_session(conn, :expires_at, expires_at())
   end
 
-  def administrator(conn) do
-    id = get_session(conn, :current_administrator)
-    if id, do: Account.get_administrator!(id)
+  def user(conn) do
+    if user_id(conn) do
+      case Account.get_user(type(conn), user_id(conn)) do
+        user -> user
+        _    -> nil
+      end
+    end
   end
 
-  def logged_in?(conn), do: !!administrator(conn)
+  def logged_in_user_type(conn) do
+    type(conn)
+  end
 
   def expired?(conn) do
-    session_expiration = get_session(conn, :expires_at)
-    case Timex.parse(session_expiration, "%FT%T%:z", :strftime) do
+    case Timex.parse(expires_at(conn), "%FT%T%:z", :strftime) do
       {:ok, expires_at} -> Timex.after?(Timex.now, expires_at)
       {:error, _} -> true
     end
@@ -48,4 +60,8 @@ defmodule WoWeb.Session do
   defp expires_at do
     Timex.now |> Timex.shift(hours: 1) |> Timex.format!("%FT%T%:z", :strftime)
   end
+
+  defp type(conn), do: get_session(conn, :user_type)
+  defp user_id(conn), do: get_session(conn, :current_user)
+  defp expires_at(conn), do: get_session(conn, :expires_at)
 end
