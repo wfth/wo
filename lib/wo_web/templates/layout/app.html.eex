@@ -21,15 +21,7 @@
       <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
           <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
-          <%= if logged_in_user_type(@conn) == Wo.Account.Administrator do %>
-            <li>
-              Account
-              <ul class="menu">
-                <li><%= link "Logout", to: admin_session_path(@conn, :delete), method: :delete %></li>
-              </ul>
-            </li>
-          <% end %>
-          <%= if logged_in_user_type(@conn) == Wo.Account.Visitor do %>
+          <%= if !!logged_in_user_type(@conn) do %>
             <li>
               Account
               <ul class="menu">

@@ -30,24 +30,18 @@ defmodule WoWeb.Router do
 
     get "/register", VisitorController, :new
     post "/register", VisitorController, :create
-
-    get "/login", SessionController, :new
-    post "/login", SessionController, :create
-    delete "/logout", SessionController, :delete
   end
 
-  scope "/admin", WoWeb.Admin, as: :admin do
+  scope "/", WoWeb do
     pipe_through :browser
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do
     pipe_through [:browser, :authorized]
-
-    get "/", SermonSeriesController, :index
-    delete "/logout", SessionController, :delete
 
     resources "/sermon_series", SermonSeriesController, except: [:show] do
       resources "/sermon", SermonController

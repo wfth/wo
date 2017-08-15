@@ -3,11 +3,22 @@ defmodule Wo.Account do
   import Ecto.Changeset
   alias Wo.Repo
 
-  def get_user_by_email(type, email), do: Repo.get_by(type, email: email)
+  alias Wo.Account.Administrator
+  alias Wo.Account.Visitor
+
+  def get_user_by_email(email) do
+    get_user_by_email(email, [Administrator, Visitor])
+  end
+  def get_user_by_email(_, []), do: nil
+  def get_user_by_email(email, types) do
+    [head | tail] = types
+    user = Repo.get_by(head, email: email)
+    if user, do: {head, user}, else: get_user_by_email(email, tail)
+  end
 
   def get_user(type, id), do: Repo.get(type, id)
 
-  alias Wo.Account.Administrator
+  # Administrators
 
   def list_administrators do
     Repo.all(Administrator)
@@ -38,7 +49,7 @@ defmodule Wo.Account do
     Administrator.changeset(administrator, %{})
   end
 
-  alias Wo.Account.Visitor
+  # Visitors
 
   def list_visitors do
     Repo.all(Visitor)

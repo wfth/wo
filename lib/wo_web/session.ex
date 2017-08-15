@@ -5,10 +5,10 @@ defmodule WoWeb.Session do
   alias Wo.Account.Administrator
   alias Wo.Account.Visitor
 
-  def login(conn, type, params) do
+  def login(conn, params) do
     if !!logged_in_user_type(conn), do: {:error, conn}
 
-    user = Account.get_user_by_email(type, String.downcase(params["email"]))
+    {type, user} = Account.get_user_by_email(String.downcase(params["email"]))
     if authenticate(user, params["password"]) do
       {:ok, conn
             |> put_session(:current_user, user.id)
