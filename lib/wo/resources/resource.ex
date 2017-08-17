@@ -30,17 +30,19 @@ defmodule Wo.Resource do
 
   alias Wo.Resource.Sermon
 
+  def list_sermons(sermon_series_id, preload: true) do
+    list_sermons(sermon_series_id) |> Repo.preload(:sermon_series)
+  end
   def list_sermons(sermon_series_id) do
     Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
   end
 
-  def preload(struct, association) when is_atom(association) do
-    Repo.preload(struct, association)
-  end
-
+  def get_sermon!(id, preload: true), do: get_sermon!(id) |> Repo.preload(:sermon_series)
   def get_sermon!(id), do: Repo.get!(Sermon, id)
 
-  def create_sermon(attrs \\ %{}, %SermonSeries{} = sermon_series \\ %SermonSeries{}, %Sermon{} = sermon \\ %Sermon{}) do
+  def create_sermon(attrs \\ %{},
+                    %SermonSeries{} = sermon_series \\ %SermonSeries{},
+                    %Sermon{} = sermon \\ %Sermon{}) do
     sermon
     |> Sermon.changeset(attrs)
     |> put_assoc(:sermon_series, sermon_series)

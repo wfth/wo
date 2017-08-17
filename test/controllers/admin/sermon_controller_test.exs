@@ -2,12 +2,21 @@ defmodule WoWeb.AdminSermonControllerTest do
   use WoWeb.ConnCase
 
   alias Wo.Resource.Sermon
+  alias Wo.Account
+  alias WoWeb.Session
+
+  @administrator_attrs %{first_name: "Test", last_name: "Dude", email: "tester@dude.com", password: "testing123", administrator: true}
   @valid_attrs %{description: "some content", passages: "some content", price: 120.5, title: "some content", uuid: "some content"}
   @invalid_attrs %{title: ""}
 
   setup do
+    {:ok, user} = Account.create_user(@administrator_attrs)
+
+    conn = build_conn() |> init_test_session(%{})
+    {:ok, logged_in_conn} = Session.login(conn, %{email: user.email, password: user.password})
+
     sermon_series = insert_sermon_series(@valid_attrs)
-    {:ok, conn: build_conn(), sermon_series: sermon_series}
+    {:ok, conn: logged_in_conn, sermon_series: sermon_series}
   end
 
   test "lists all entries on index", %{conn: conn, sermon_series: series} do

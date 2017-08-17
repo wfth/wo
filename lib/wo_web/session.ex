@@ -3,8 +3,8 @@ defmodule WoWeb.Session do
   import Plug.Conn
 
   def login(conn, params) do
-    user = Account.get_user_by_email(String.downcase(params["email"]))
-    if authenticate(user, params["password"]) do
+    user = Account.get_user_by_email(String.downcase(get(params, :email)))
+    if authenticate(user, get(params, :password)) do
       {:ok, conn
             |> put_session(:current_user, user.id)
             |> renew_session()}
@@ -49,6 +49,7 @@ defmodule WoWeb.Session do
     Timex.now |> Timex.shift(hours: 1) |> Timex.format!("%FT%T%:z", :strftime)
   end
 
+  defp get(map, key) when is_atom(key), do: map[key] || map[Atom.to_string(key)]
   defp user_id(conn), do: get_session(conn, :current_user)
   defp expires_at(conn), do: get_session(conn, :expires_at)
 end

@@ -24,6 +24,7 @@ defmodule WoWeb.ConnCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Plug.Test
 
       import WoWeb.Router.Helpers
       import Wo.TestHelpers

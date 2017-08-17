@@ -96,12 +96,12 @@ defmodule Wo.ResourceTest do
 
     test "list_sermons/0 returns all sermons" do
       sermon = sermon_fixture()
-      assert Resource.preload(Resource.list_sermons(sermon.sermon_series.id), :sermon_series) == [sermon]
+      assert Resource.list_sermons(sermon.sermon_series.id, preload: true) == [sermon]
     end
 
     test "get_sermon!/1 returns the sermon with given id" do
       sermon = sermon_fixture()
-      assert Resource.get_sermon!(sermon.id) |> Resource.preload(:sermon_series) == sermon
+      assert Resource.get_sermon!(sermon.id, preload: true) == sermon
     end
 
     test "create_sermon/1 with valid data creates a sermon" do
@@ -139,7 +139,7 @@ defmodule Wo.ResourceTest do
     test "update_sermon/2 with invalid data returns error changeset" do
       sermon = sermon_fixture()
       assert {:error, %Ecto.Changeset{}} = Resource.update_sermon(sermon, @invalid_attrs)
-      assert sermon == Resource.get_sermon!(sermon.id) |> Resource.preload(:sermon_series)
+      assert sermon == Resource.get_sermon!(sermon.id, preload: true)
     end
 
     test "delete_sermon/1 deletes the sermon" do

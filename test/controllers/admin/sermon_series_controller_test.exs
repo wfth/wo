@@ -1,9 +1,28 @@
 defmodule WoWeb.AdminSermonSeriesControllerTest do
   use WoWeb.ConnCase
 
+  alias Wo.Resource
   alias Wo.Resource.SermonSeries
+  alias Wo.Account
+  alias WoWeb.Session
+
+  @administrator_attrs %{first_name: "Test", last_name: "Dude", email: "tester@dude.com", password: "testing123", administrator: true}
   @valid_attrs %{description: "some content", passages: "some content", price: 120.5, title: "some content", uuid: "some content"}
   @invalid_attrs %{title: ""}
+
+  setup tags do
+    {:ok, user} = Account.create_user(@administrator_attrs)
+
+    conn = build_conn() |> init_test_session(%{})
+    {:ok, logged_in_conn} = Session.login(conn, %{email: user.email, password: user.password})
+
+    if tags[:insert_sermon_series] do
+      {:ok, sermon_series} = Resource.create_sermon_series(@valid_attrs)
+      {:ok, conn: logged_in_conn, sermon_series: sermon_series}
+    else
+      {:ok, conn: logged_in_conn}
+    end
+  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, admin_sermon_series_path(conn, :index)
@@ -32,27 +51,27 @@ defmodule WoWeb.AdminSermonSeriesControllerTest do
     end
   end
 
-  test "renders form for editing chosen resource", %{conn: conn} do
-    sermon_series = Repo.insert! %SermonSeries{}
+  @tag :insert_sermon_series
+  test "renders form for editing chosen resource", %{conn: conn, sermon_series: sermon_series} do
     conn = get conn, admin_sermon_series_path(conn, :edit, sermon_series)
     assert html_response(conn, 200) =~ "Edit Sermon Series"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    sermon_series = Repo.insert! %SermonSeries{}
+  @tag :insert_sermon_series
+  test "updates chosen resource and redirects when data is valid", %{conn: conn, sermon_series: sermon_series} do
     conn = put conn, admin_sermon_series_path(conn, :update, sermon_series), sermon_series: @valid_attrs
     assert redirected_to(conn) == admin_sermon_series_path(conn, :index)
     assert Repo.get_by(SermonSeries, @valid_attrs)
   end
 
-  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    sermon_series = Repo.insert! %SermonSeries{}
+  @tag :insert_sermon_series
+  test "does not update chosen resource and renders errors when data is invalid", %{conn: conn, sermon_series: sermon_series} do
     conn = put conn, admin_sermon_series_path(conn, :update, sermon_series), sermon_series: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit Sermon Series"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    sermon_series = Repo.insert! %SermonSeries{}
+  @tag :insert_sermon_series
+  test "deletes chosen resource", %{conn: conn, sermon_series: sermon_series} do
     conn = delete conn, admin_sermon_series_path(conn, :delete, sermon_series)
     assert redirected_to(conn) == admin_sermon_series_path(conn, :index)
     refute Repo.get(SermonSeries, sermon_series.id)
