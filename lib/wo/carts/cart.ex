@@ -12,7 +12,7 @@ defmodule Wo.Carts.Cart do
     field :tax, :integer
     field :total, :integer
     field :zip, :string
-    belongs_to :visitor, Wo.Account.Visitor
+    belongs_to :user, Wo.Account.User
     has_many :cart_items, CartItem, on_delete: :delete_all
 
     timestamps()

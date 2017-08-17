@@ -8,8 +8,8 @@ defmodule WoWeb.Plug.Authorize do
 
   def call(conn, _opts) do
     cond do
-      Session.logged_in_user_type(conn) == Wo.Account.Administrator && !Session.expired?(conn) -> conn
-      Session.logged_in_user_type(conn) == Wo.Account.Visitor ->
+      Session.user(conn).administrator && !Session.expired?(conn) -> conn
+      !Session.user(conn).administrator ->
         conn
         |> put_flash(:error, "You must be logged in as an Administrator to access that page.")
         |> redirect(to: "/")

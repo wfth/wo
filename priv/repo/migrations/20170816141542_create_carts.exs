@@ -11,10 +11,9 @@ defmodule Wo.Repo.Migrations.CreateCarts do
       add :city, :string
       add :state, :string
       add :zip, :string
-      add :visitor_id, references(:visitors)
+      add :user_id, references(:users)
 
       timestamps()
     end
-
   end
 end

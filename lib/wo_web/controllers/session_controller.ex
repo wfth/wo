@@ -1,8 +1,7 @@
 defmodule WoWeb.SessionController do
   use WoWeb, :controller
+
   alias WoWeb.Session
-  alias Wo.Account.Administrator
-  alias Wo.Account.Visitor
 
   plug :ensure_logged_out when not action in [:delete]
 
@@ -30,7 +29,7 @@ defmodule WoWeb.SessionController do
   end
 
   defp ensure_logged_out(conn, _opts) do
-    if !!Session.logged_in_user_type(conn) do
+    if Session.logged_in?(conn) do
       conn
       |> put_flash(:info, "You are already logged in.")
       |> redirect(to: "/")

@@ -2,17 +2,11 @@ defmodule WoWeb.Session do
   alias Wo.Account
   import Plug.Conn
 
-  alias Wo.Account.Administrator
-  alias Wo.Account.Visitor
-
   def login(conn, params) do
-    if !!logged_in_user_type(conn), do: {:error, conn}
-
-    {type, user} = Account.get_user_by_email(String.downcase(params["email"]))
+    user = Account.get_user_by_email(String.downcase(params["email"]))
     if authenticate(user, params["password"]) do
       {:ok, conn
             |> put_session(:current_user, user.id)
-            |> put_session(:user_type, type)
             |> renew_session()}
     else
       {:error, conn}
@@ -23,7 +17,6 @@ defmodule WoWeb.Session do
     conn
     |> delete_session(:current_user)
     |> delete_session(:expires_at)
-    |> delete_session(:user_type)
   end
 
   def authenticate(user, password) do
@@ -38,16 +31,11 @@ defmodule WoWeb.Session do
   end
 
   def user(conn) do
-    if user_id(conn) do
-      case Account.get_user(type(conn), user_id(conn)) do
-        user -> user
-        _    -> nil
-      end
-    end
+    if user_id(conn), do: Account.get_user(user_id(conn))
   end
 
-  def logged_in_user_type(conn) do
-    type(conn)
+  def logged_in?(conn) do
+    !!user_id(conn)
   end
 
   def expired?(conn) do
@@ -61,7 +49,6 @@ defmodule WoWeb.Session do
     Timex.now |> Timex.shift(hours: 1) |> Timex.format!("%FT%T%:z", :strftime)
   end
 
-  defp type(conn), do: get_session(conn, :user_type)
   defp user_id(conn), do: get_session(conn, :current_user)
   defp expires_at(conn), do: get_session(conn, :expires_at)
 end

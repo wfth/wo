@@ -11,6 +11,5 @@ defmodule Wo.Repo.Migrations.CreateCartItems do
 
       timestamps()
     end
-
   end
 end

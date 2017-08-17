@@ -105,7 +105,7 @@ defmodule Wo.ResourceTest do
     end
 
     test "create_sermon/1 with valid data creates a sermon" do
-      assert {:ok, %Sermon{} = sermon} = Resource.create_sermon(@valid_attrs)
+      assert {:ok, %Sermon{} = sermon} = Resource.create_sermon(@valid_attrs, sermon_series_fixture())
       assert sermon.audio_url == "some audio_url"
       assert sermon.buy_graphic_url == "some buy_graphic_url"
       assert sermon.description == "some description"
