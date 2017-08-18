@@ -6,8 +6,7 @@ defmodule WoWeb.Session do
     user = Account.get_user_by_email(String.downcase(get(params, :email)))
     if authenticate(user, get(params, :password)) do
       {:ok, conn
-            |> put_session(:current_user, user.id)
-            |> renew_session()}
+            |> put_session(:current_user, user.id)}
     else
       {:error, conn}
     end
@@ -16,7 +15,6 @@ defmodule WoWeb.Session do
   def logout(conn) do
     conn
     |> delete_session(:current_user)
-    |> delete_session(:expires_at)
   end
 
   def authenticate(user, password) do
@@ -24,10 +22,6 @@ defmodule WoWeb.Session do
       nil -> false
       _   -> Comeonin.Bcrypt.checkpw(password, user.crypted_password)
     end
-  end
-
-  def renew_session(conn) do
-    put_session(conn, :expires_at, expires_at())
   end
 
   def user(conn) do
@@ -38,18 +32,6 @@ defmodule WoWeb.Session do
     !!user_id(conn)
   end
 
-  def expired?(conn) do
-    case Timex.parse(expires_at(conn), "%FT%T%:z", :strftime) do
-      {:ok, expires_at} -> Timex.after?(Timex.now, expires_at)
-      {:error, _} -> true
-    end
-  end
-
-  defp expires_at do
-    Timex.now |> Timex.shift(hours: 1) |> Timex.format!("%FT%T%:z", :strftime)
-  end
-
   defp get(map, key) when is_atom(key), do: map[key] || map[Atom.to_string(key)]
   defp user_id(conn), do: get_session(conn, :current_user)
-  defp expires_at(conn), do: get_session(conn, :expires_at)
 end
