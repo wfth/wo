@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="large-12 medium-12 column">
+    <%= for cart_item <- @cart_items do %>
+    <div class="row">
+      <hr \>
+
+      <div class="large-11 columns">
+        <h4><%= Wo.Carts.resource(cart_item).title %></h4>
+      </div>
+      <div class="large-1 columns">
+        <%= link "Remove", to: cart_item_path(@conn, :delete, cart_item_id: cart_item.id), method: :delete, class: "button" %>
+      </div>
+    </div>
+    <% end %>
+
+    <%= link "Remove All Items", to: cart_path(@conn, :delete), method: :delete, class: "button" %>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 defmodule WoWeb.Session do
-  alias Wo.Account
   import Plug.Conn
+
+  alias Wo.Account
 
   def login(conn, params) do
     user = Account.get_user_by_email(String.downcase(get(params, :email)))
@@ -34,4 +35,14 @@ defmodule WoWeb.Session do
 
   defp get(map, key) when is_atom(key), do: map[key] || map[Atom.to_string(key)]
   defp user_id(conn), do: get_session(conn, :current_user)
+
+  alias Wo.Carts
+
+  def put_cart(conn, cart) do
+    conn |> put_session(:cart, cart.id)
+  end
+
+  def cart(conn) do
+    if get_session(conn, :cart), do: Carts.get_cart(get_session(conn, :cart))
+  end
 end

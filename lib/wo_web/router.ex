@@ -13,6 +13,14 @@ defmodule WoWeb.Router do
     plug WoWeb.Plug.Authorize
   end
 
+  scope "/", WoWeb do
+    pipe_through :browser
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
+  end
+
   scope "/", WoWeb.Visitor do
     pipe_through :browser # Use the default browser stack
 
@@ -29,14 +37,12 @@ defmodule WoWeb.Router do
 
     get "/register", VisitorController, :new
     post "/register", VisitorController, :create
-  end
 
-  scope "/", WoWeb do
-    pipe_through :browser
+    get "/cart", CartController, :show
+    delete "/cart", CartController, :delete
 
-    get "/login", SessionController, :new
-    post "/login", SessionController, :create
-    delete "/logout", SessionController, :delete
+    post "/cart_item", CartItemController, :create
+    delete "/cart_item", CartItemController, :delete
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do

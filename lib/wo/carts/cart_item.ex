@@ -1,6 +1,9 @@
 defmodule Wo.Carts.CartItem do
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias Wo.Carts.Cart
   alias Wo.Carts.CartItem
 
   schema "cart_items" do

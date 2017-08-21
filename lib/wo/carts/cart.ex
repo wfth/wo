@@ -1,7 +1,10 @@
 defmodule Wo.Carts.Cart do
   use Ecto.Schema
+
   import Ecto.Changeset
+
   alias Wo.Carts.Cart
+  alias Wo.Carts.CartItem
 
   schema "carts" do
     field :address, :string
@@ -22,6 +25,5 @@ defmodule Wo.Carts.Cart do
   def changeset(%Cart{} = cart, attrs) do
     cart
     |> cast(attrs, [:tax, :total, :purchased_at, :stripe_charge_id, :address, :city, :state, :zip])
-    |> validate_required([:tax, :total, :purchased_at, :stripe_charge_id, :address, :city, :state, :zip])
   end
 end

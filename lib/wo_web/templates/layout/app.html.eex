@@ -31,6 +31,7 @@
           <% end %>
           <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
           <%= nav_link @conn, "News", newsletter_path(@conn, :signup) %>
+          <%= nav_link @conn, "Cart", cart_path(@conn, :show) %>
         </ul>
       </div>
 
