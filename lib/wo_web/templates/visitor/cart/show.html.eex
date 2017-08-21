@@ -5,7 +5,7 @@
       <hr \>
 
       <div class="large-11 columns">
-        <h4><%= Wo.Carts.resource(cart_item).title %></h4>
+        <h4><%= Wo.Carts.resource(cart_item).title %> x <%= cart_item.quantity %></h4>
       </div>
       <div class="large-1 columns">
         <%= link "Remove", to: cart_item_path(@conn, :delete, cart_item_id: cart_item.id), method: :delete, class: "button" %>
