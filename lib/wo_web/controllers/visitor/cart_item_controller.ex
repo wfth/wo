@@ -8,10 +8,10 @@ defmodule WoWeb.Visitor.CartItemController do
     cart = cart |> Wo.Repo.preload(:cart_items)
     conn = WoWeb.Session.put_cart(conn, cart)
 
-    if cart_item = Enum.find(cart.cart_items, fn(ci) -> ci.resource_id == cart_item_params["resource_id"] |> String.to_integer end) do
-      redirect_with_db_operation(conn, &Carts.update_cart_item/2, cart_item, %{"quantity" => cart_item.quantity + 1})
+    if cart_item = Enum.find(cart.cart_items, fn(ci) -> (ci.resource_id == cart_item_params["resource_id"] |> String.to_integer) && ci.resource_type == cart_item_params["resource_type"] end) do
+      redirect_with_db_operation(conn, &Carts.update_cart_item/2, cart_item, %{"quantity" => cart_item.quantity + 1}, cart_item_params["redirect_to"])
     else
-      redirect_with_db_operation(conn, &Carts.create_cart_item/2, cart, cart_item_params |> Map.put("quantity", 1))
+      redirect_with_db_operation(conn, &Carts.create_cart_item/2, cart, cart_item_params |> Map.put("quantity", 1), cart_item_params["redirect_to"])
     end
   end
 
@@ -27,16 +27,16 @@ defmodule WoWeb.Visitor.CartItemController do
     redirect(conn, to: cart_path(conn, :show))
   end
 
-  defp redirect_with_db_operation(conn, operation, model, params) do
+  defp redirect_with_db_operation(conn, operation, model, params, redirect_path) do
     case operation.(model, params) do
       {:ok, _cart_item} ->
         conn
         |> put_flash(:info, "Added item to your cart.")
-        |> redirect(to: sermon_series_path(conn, :index))
+        |> redirect(to: redirect_path)
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "Could not add that item to your cart.")
-        |> redirect(to: sermon_series_path(conn, :index))
+        |> redirect(to: redirect_path)
     end
   end
 end

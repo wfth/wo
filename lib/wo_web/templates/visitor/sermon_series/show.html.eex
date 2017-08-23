@@ -2,7 +2,7 @@
   <div class="large-12 medium-12 columns">
     <div class="row">
       <div class="small-9 columns">
-        <%= link "Buy", to: cart_item_path(@conn, :create, resource_type: "sermon_series", resource_id: @sermon_series.id, price: round(@sermon_series.price)), method: :post, class: "button" %>
+        <%= add_to_cart_link(@conn, @sermon_series) %>
         <%= @sermon_series.title %> - $<%= @sermon_series.price %>
         <small><%= @sermon_series.released_on_string %></small>
         <p><%= @sermon_series.description %></p>
@@ -18,7 +18,7 @@
 
     <div class="row">
       <div class="small-9 columns">
-        <%= link "Buy", to: cart_item_path(@conn, :create, resource_type: "sermon", resource_id: sermon.id, price: round(sermon.price)), method: :post, class: "button" %>
+        <%= add_to_cart_link(@conn, sermon) %>
         <%= link sermon.title, to: sermon_path(@conn, :show, %Wo.Resource.Slug{resource: sermon}) %>
         <p><%= sermon.description %></p>
       </div>

@@ -43,7 +43,7 @@ defmodule Wo.Carts do
   alias Wo.Carts.CartItem
 
   def resource(%CartItem{} = cart_item) do
-    type_mapping = %{"sermon" => Wo.Resource.Sermon, "sermon_series" => Wo.Resource.SermonSeries}
+    type_mapping = %{"sermons" => Wo.Resource.Sermon, "sermon_series" => Wo.Resource.SermonSeries}
     Repo.get_by(type_mapping[cart_item.resource_type], id: cart_item.resource_id)
   end
 
