@@ -61,6 +61,8 @@ defmodule Wo.Carts do
   end
 
   def update_cart_item(%CartItem{} = cart_item, attrs) do
+    attrs = Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * round(resource(cart_item).price))
+
     cart_item
     |> CartItem.changeset(attrs)
     |> Repo.update()

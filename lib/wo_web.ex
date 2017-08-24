@@ -36,6 +36,8 @@ defmodule WoWeb do
 
       import WoWeb.Router.Helpers
       import WoWeb.Gettext
+
+      require IEx
     end
   end
 

@@ -5,7 +5,7 @@ defmodule WoWeb.Visitor.CartController do
 
   def show(conn, _params) do
     if cart = WoWeb.Session.cart(conn) do
-      cart_items = Carts.list_cart_items(cart.id)
+      cart_items = Carts.list_cart_items(cart.id) |> Enum.sort(&(&1.inserted_at < &2.inserted_at))
       render conn, "show.html", cart_items: cart_items
     else
       render conn, "show.html", cart_items: []

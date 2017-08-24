@@ -14,6 +14,8 @@ defmodule WoWeb.TemplateHelpers do
   def add_to_cart_link(conn, struct) do
     {_, resource_type} = struct.__meta__.source
 
-    link "Add to Cart", to: cart_item_path(conn, :create, resource_type: resource_type, resource_id: struct.id, price: round(struct.price), redirect_to: conn.request_path), method: :post, class: "button"
+    link "Add to Cart", to: cart_item_path(conn, :create, resource_type: resource_type,
+      resource_id: struct.id, price: round(struct.price), redirect_to: conn.request_path),
+      method: :post, class: "button"
   end
 end

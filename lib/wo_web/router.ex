@@ -43,6 +43,7 @@ defmodule WoWeb.Router do
 
     post "/cart_item", CartItemController, :create
     delete "/cart_item", CartItemController, :delete
+    put "/cart_item", CartItemController, :update
   end
 
   scope "/admin", WoWeb.Admin, as: :admin do
