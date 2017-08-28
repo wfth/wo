@@ -1,6 +1,7 @@
 defmodule Wo.Carts do
   import Ecto.Query, warn: false
   import Ecto.Changeset
+  alias Ecto.Multi
   alias Wo.Repo
 
   alias Wo.Account.User
@@ -60,16 +61,32 @@ defmodule Wo.Carts do
     |> Repo.insert()
   end
 
-  def update_cart_item(%CartItem{} = cart_item, attrs) do
-    attrs = Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * round(resource(cart_item).price))
-
+  def update_cart_item(%CartItem{} = cart_item, %{"quantity" => "0"} = _attrs) do
+    delete_cart_item(cart_item)
+  end
+  def update_cart_item(%CartItem{} = cart_item, %{"quantity" => quantity} = attrs) when is_integer(quantity) do
+    _update_cart_item(cart_item, Map.put(attrs, "price", quantity * round(resource(cart_item).price)))
+  end
+  def update_cart_item(%CartItem{} = cart_item, %{"quantity" => quantity} = attrs) when is_binary(quantity) do
+    _update_cart_item(cart_item, Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * round(resource(cart_item).price)))
+  end
+  defp _update_cart_item(%CartItem{} = cart_item, attrs) do
     cart_item
     |> CartItem.changeset(attrs)
     |> Repo.update()
   end
 
   def delete_cart_item(%CartItem{} = cart_item) do
-    Repo.delete(cart_item)
+    cart_item = cart_item |> Repo.preload(:cart)
+    cart = cart_item.cart |> Repo.preload(:cart_items)
+
+    Multi.new
+    |> Multi.delete(:cart_item, cart_item)
+    |> Multi.merge(fn(_changes) -> if Enum.count(cart.cart_items) == 1,
+                                     do: Multi.new |> Multi.delete(:cart, cart),
+                                     else: Multi.new
+                                   end)
+    |> Repo.transaction()
   end
 
   def change_cart_item(%CartItem{} = cart_item) do

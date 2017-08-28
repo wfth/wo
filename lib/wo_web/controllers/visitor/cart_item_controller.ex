@@ -37,13 +37,8 @@ defmodule WoWeb.Visitor.CartItemController do
   end
 
   def delete(conn, %{"cart_item_id" => cart_item_id}) do
-    cart_item = Carts.get_cart_item!(cart_item_id) |> Wo.Repo.preload(:cart)
+    cart_item = Carts.get_cart_item!(cart_item_id)
     Carts.delete_cart_item(cart_item)
-
-    cart = cart_item.cart |> Wo.Repo.preload(:cart_items)
-    if Enum.empty?(cart.cart_items) do
-      Carts.delete_cart(cart)
-    end
 
     redirect(conn, to: cart_path(conn, :show))
   end
