@@ -54,11 +54,18 @@ defmodule Wo.Carts do
 
   def get_cart_item!(id), do: Repo.get!(CartItem, id)
 
-  def create_cart_item(%Cart{} = cart, attrs \\ %{}) do
-    %CartItem{}
-    |> CartItem.changeset(attrs)
-    |> put_assoc(:cart, cart)
-    |> Repo.insert()
+  def create_cart_item(%Cart{} = cart,
+    %{"resource_id" => resource_id,
+      "resource_type" => resource_type} = attrs \\ %{}) do
+    existing_cart_item = Repo.get_by(CartItem, resource_id: resource_id, resource_type: resource_type)
+    if existing_cart_item do
+      update_cart_item(existing_cart_item, %{"quantity" => existing_cart_item.quantity + 1})
+    else
+      %CartItem{}
+      |> CartItem.changeset(attrs |> Map.put("quantity", 1))
+      |> put_assoc(:cart, cart)
+      |> Repo.insert()
+    end
   end
 
   def update_cart_item(%CartItem{} = cart_item, %{"quantity" => "0"} = _attrs) do

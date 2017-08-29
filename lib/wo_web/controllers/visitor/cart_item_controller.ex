@@ -10,18 +10,7 @@ defmodule WoWeb.Visitor.CartItemController do
     cart = cart |> Wo.Repo.preload(:cart_items)
     conn = WoWeb.Session.put_cart(conn, cart)
 
-    {operation, model, params} = if cart_item = Enum.find(cart.cart_items,
-                                                          fn(ci) ->
-                                                            (ci.resource_id == cart_item_params["resource_id"]
-                                                                               |> String.to_integer) &&
-                                                            ci.resource_type == cart_item_params["resource_type"]
-                                                          end) do
-      {&Carts.update_cart_item/2, cart_item, %{"quantity" => cart_item.quantity + 1}}
-    else
-      {&Carts.create_cart_item/2, cart, cart_item_params |> Map.put("quantity", 1)}
-    end
-
-    with {:ok, _cart_item} <- operation.(model, params) do
+    with {:ok, _cart_item} <- Carts.create_cart_item(cart, cart_item_params) do
       conn
       |> put_flash(:info, "Added item to your cart.")
       |> redirect(to: cart_item_params["redirect_to"])
