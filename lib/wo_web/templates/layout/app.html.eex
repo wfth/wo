@@ -21,17 +21,17 @@
       <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
           <%= nav_link @conn, "WFTH", home_path(@conn, :index) %>
-          <%= if logged_in?(@conn) do %>
-            <li>
-              Account
-              <ul class="menu">
-                <li><%= link "Logout", to: session_path(@conn, :delete), method: :delete %></li>
-              </ul>
-            </li>
+          <%= if user(@conn) && user(@conn).administrator do %>
+            <%= nav_link @conn, "Admin", admin_sermon_series_path(@conn, :index) %>
           <% end %>
           <%= nav_link @conn, "Sermon Series", sermon_series_path(@conn, :index) %>
           <%= nav_link @conn, "News", newsletter_path(@conn, :signup) %>
           <%= nav_link @conn, "Cart", cart_path(@conn, :show) %>
+          <%= if logged_in?(@conn) do %>
+            <%= nav_link @conn, "Logout", session_path(@conn, :delete), method: :delete %>
+          <% else %>
+            <%= nav_link @conn, "Log in", session_path(@conn, :new) %>
+          <% end %>
         </ul>
       </div>
 

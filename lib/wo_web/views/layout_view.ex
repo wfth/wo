@@ -9,8 +9,8 @@ defmodule WoWeb.LayoutView do
     Enum.reduce([:info, :warn, :error], [], fn(key, acc) -> acc ++ [flash_callout_tag(key, get_flash(conn, key))] end)
   end
 
-  def nav_link(conn, text, path) do
+  def nav_link(conn, text, path, opts \\ []) do
     class = if conn.request_path == path, do: "active", else: ""
-    content_tag(:li, link(text, to: path), class: class)
+    content_tag(:li, link(text, Keyword.merge([to: path], opts)), class: class)
   end
 end
