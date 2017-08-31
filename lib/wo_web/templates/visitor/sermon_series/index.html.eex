@@ -7,7 +7,7 @@
 
       <div class="row">
         <div class="small-9 columns">
-          <h5><%= link series.title, to: sermon_series_path(@conn, :show, %Wo.Resource.Slug{resource: series}) %> - $<%= series.price %></h5>
+          <h5><%= link series.title, to: sermon_series_path(@conn, :show, %Wo.Resource.Slug{resource: series}) %> - $<%= display(series.price) %></h5>
           <small><%= series.released_on_string %></small>
           <p><%= series.description %></p>
         </div>

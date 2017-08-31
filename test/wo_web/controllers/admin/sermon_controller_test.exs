@@ -6,7 +6,7 @@ defmodule WoWeb.AdminSermonControllerTest do
   alias WoWeb.Session
 
   @administrator_attrs %{first_name: "Test", last_name: "Dude", email: "tester@dude.com", password: "testing123", administrator: true}
-  @valid_attrs %{description: "some content", passages: "some content", price: 120.5, title: "some content", uuid: "some content"}
+  @valid_attrs %{description: "some content", passages: "some content", price: 120, title: "some content", uuid: "some content"}
   @invalid_attrs %{title: ""}
 
   setup do

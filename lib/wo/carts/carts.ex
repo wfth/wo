@@ -72,10 +72,10 @@ defmodule Wo.Carts do
     delete_cart_item(cart_item)
   end
   def update_cart_item(%CartItem{} = cart_item, %{"quantity" => quantity} = attrs) when is_integer(quantity) do
-    _update_cart_item(cart_item, Map.put(attrs, "price", quantity * round(resource(cart_item).price)))
+    _update_cart_item(cart_item, Map.put(attrs, "price", quantity * resource(cart_item).price))
   end
   def update_cart_item(%CartItem{} = cart_item, %{"quantity" => quantity} = attrs) when is_binary(quantity) do
-    _update_cart_item(cart_item, Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * round(resource(cart_item).price)))
+    _update_cart_item(cart_item, Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * resource(cart_item).price))
   end
   defp _update_cart_item(%CartItem{} = cart_item, attrs) do
     cart_item

@@ -34,7 +34,7 @@
 
   <li>
     <strong>Price:</strong>
-    <%= @sermon.price %>
+    <%= display(@sermon.price) %>
   </li>
 
 </ul>

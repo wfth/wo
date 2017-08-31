@@ -33,10 +33,10 @@
 
   <div>
     <div class="clearfix">
-      <div class="float-left"><%= label f, :price %></div>
-      <div class="float-right"><%= error_tag f, :price %></div>
+      <div class="float-left"><%= label f, :float_price %></div>
+      <div class="float-right"><%= error_tag f, :float_price %></div>
     </div>
-    <%= number_input f, :price, step: "any" %>
+    <%= number_input f, :float_price, step: "any" %>
   </div>
 
   <%= hidden_input f, :audio_url %>

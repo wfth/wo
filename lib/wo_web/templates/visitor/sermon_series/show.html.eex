@@ -3,7 +3,7 @@
     <div class="row">
       <div class="small-9 columns">
         <%= add_to_cart_link(@conn, @sermon_series) %>
-        <%= @sermon_series.title %> - $<%= @sermon_series.price %>
+        <%= @sermon_series.title %> - $<%= display(@sermon_series.price) %>
         <small><%= @sermon_series.released_on_string %></small>
         <p><%= @sermon_series.description %></p>
         <p><%= link "Back", to: sermon_series_path(@conn, :index) %></p>

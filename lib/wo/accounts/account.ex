@@ -16,7 +16,6 @@ defmodule Wo.Account do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
-    |> put_password()
     |> Repo.insert()
   end
 
@@ -32,9 +31,5 @@ defmodule Wo.Account do
 
   def change_user(%User{} = user) do
     User.changeset(user, %{})
-  end
-
-  defp put_password(changeset) do
-    put_change(changeset, :crypted_password, Comeonin.Bcrypt.hashpwsalt(changeset.changes.password))
   end
 end

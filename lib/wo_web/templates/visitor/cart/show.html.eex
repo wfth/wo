@@ -22,7 +22,7 @@
         <h4><%= Wo.Carts.resource(cart_item).title %></h4>
       </div>
       <div class="large-2 columns">
-        <p><%= Wo.Carts.resource(cart_item).price %></p>
+        <p><%= display(Wo.Carts.resource(cart_item).price) %></p>
       </div>
       <div class="large-1 columns">
         <%= form_for @conn, cart_item_path(@conn, :update), [method: :put, enforce_utf8: false, as: :cart_item], fn f -> %>
@@ -41,7 +41,7 @@
     <div class="row">
       <div class="large-10 columns"></div>
       <div class="large-2 columns">
-        <p>Subtotal: <%= Enum.reduce(@cart_items, 0, fn(ci, sub) -> sub + ci.price end) %></p>
+        <p>Subtotal: <%= Enum.reduce(@cart_items, 0, fn(ci, sub) -> sub + ci.price end) |> display() %></p>
       </div>
     </div>
 

@@ -9,7 +9,7 @@
             <%= img_tag sermon.buy_graphic_url %>
           </div>
           <div class="small-10 columns">
-            <h5><%= sermon.title %> - $<%= sermon.price %></h5>
+            <h5><%= sermon.title %> - $<%= display(sermon.price) %></h5>
             <p><%= sermon.description %></p>
             <p><%= sermon.passages %></p>
           </div>

@@ -15,7 +15,11 @@ defmodule WoWeb.TemplateHelpers do
     {_, resource_type} = struct.__meta__.source
 
     link "Add to Cart", to: cart_item_path(conn, :create, resource_type: resource_type,
-      resource_id: struct.id, price: round(struct.price), redirect_to: conn.request_path),
+      resource_id: struct.id, price: struct.price, redirect_to: conn.request_path),
       method: :post, class: "button"
+  end
+
+  def display(price) when is_integer(price) do
+    :erlang.float_to_binary(price/100, decimals: 2)
   end
 end

@@ -24,4 +24,12 @@ defmodule Wo.Account.User do
     |> unique_constraint(:email)
     |> validate_length(:password, min: 5)
   end
+
+  defp put_password(changeset) do
+    case changeset.changes do
+      %{password: pw} ->
+        put_change(changeset, :crypted_password, Comeonin.Bcrypt.hashpwsalt(pw))
+      %{} -> changeset
+    end
+  end
 end

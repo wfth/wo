@@ -1,12 +1,16 @@
 defmodule Wo.Resource do
   import Ecto.Query, warn: false
   import Ecto.Changeset
-  alias Wo.Repo
+  import Wo.Resource.PurchasableResource
 
+  alias Wo.Repo
   alias Wo.Resource.SermonSeries
 
   def list_sermon_series, do: Repo.all(SermonSeries)
-  def get_sermon_series!(id), do: Repo.get!(SermonSeries, id)
+  def get_sermon_series!(id) do
+    Repo.get!(SermonSeries, id)
+    |> populate_float_price()
+  end
 
   def create_sermon_series(attrs \\ %{}) do
     %SermonSeries{}
@@ -37,8 +41,12 @@ defmodule Wo.Resource do
     Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
   end
 
-  def get_sermon!(id, preload: true), do: get_sermon!(id) |> Repo.preload(:sermon_series)
-  def get_sermon!(id), do: Repo.get!(Sermon, id)
+  def get_sermon!(id, preload: true) do
+    get_sermon!(id)
+    |> Repo.preload(:sermon_series)
+    |> populate_float_price()
+  end
+  def get_sermon!(id), do: Repo.get!(Sermon, id) |> populate_float_price()
 
   def create_sermon(attrs \\ %{},
                     %SermonSeries{} = sermon_series \\ %SermonSeries{},
