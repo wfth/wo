@@ -1,6 +1,5 @@
 defmodule Wo.Account do
   import Ecto.Query, warn: false
-  import Ecto.Changeset
 
   alias Wo.Repo
   alias Wo.Account.User

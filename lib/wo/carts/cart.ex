@@ -9,7 +9,7 @@ defmodule Wo.Carts.Cart do
   schema "carts" do
     field :address, :string
     field :city, :string
-    field :purchased_at, :utc_datetime
+    field :purchased_at, :naive_datetime
     field :state, :string
     field :stripe_charge_id, :string
     field :tax, :integer

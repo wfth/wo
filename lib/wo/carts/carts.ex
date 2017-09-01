@@ -7,10 +7,6 @@ defmodule Wo.Carts do
   alias Wo.Account.User
   alias Wo.Carts.Cart
 
-  def list_carts(user_id) do
-    Repo.all(from c in Cart, where: c.user_id == ^user_id)
-  end
-
   def get_cart(id), do: Repo.get(Cart, id)
 
   def create_cart(attrs \\ %{}) do

@@ -8,6 +8,7 @@ defmodule Wo.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Wo.TestHelpers
       import Wo.DataCase
     end
   end
