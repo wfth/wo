@@ -7,7 +7,8 @@ defmodule WoWeb.AdminSermonSeriesControllerTest do
   alias WoWeb.Session
 
   @administrator_attrs %{first_name: "Test", last_name: "Dude", email: "tester@dude.com", password: "testing123", administrator: true}
-  @valid_attrs %{description: "some content", passages: "some content", price: 120, title: "some content", uuid: "some content"}
+  @valid_form_attrs %{description: "some content", passages: "some content", float_price: 120.5, title: "some content", uuid: "some content"}
+  @valid_database_attrs @valid_form_attrs |> Map.delete(:float_price) |> Map.put(:price, 12050)
   @invalid_attrs %{title: ""}
 
   setup tags do
@@ -17,7 +18,7 @@ defmodule WoWeb.AdminSermonSeriesControllerTest do
     {:ok, logged_in_conn} = Session.login(conn, %{email: user.email, password: user.password})
 
     if tags[:insert_sermon_series] do
-      {:ok, sermon_series} = Resource.create_sermon_series(@valid_attrs)
+      {:ok, sermon_series} = Resource.create_sermon_series(@valid_form_attrs)
       {:ok, conn: logged_in_conn, sermon_series: sermon_series}
     else
       {:ok, conn: logged_in_conn}
@@ -35,9 +36,9 @@ defmodule WoWeb.AdminSermonSeriesControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, admin_sermon_series_path(conn, :create), sermon_series: @valid_attrs
+    conn = post conn, admin_sermon_series_path(conn, :create), sermon_series: @valid_form_attrs
     assert redirected_to(conn) == admin_sermon_series_path(conn, :index)
-    assert Repo.get_by(SermonSeries, @valid_attrs)
+    assert Repo.get_by(SermonSeries, @valid_database_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -59,9 +60,9 @@ defmodule WoWeb.AdminSermonSeriesControllerTest do
 
   @tag :insert_sermon_series
   test "updates chosen resource and redirects when data is valid", %{conn: conn, sermon_series: sermon_series} do
-    conn = put conn, admin_sermon_series_path(conn, :update, sermon_series), sermon_series: @valid_attrs
+    conn = put conn, admin_sermon_series_path(conn, :update, sermon_series), sermon_series: @valid_form_attrs
     assert redirected_to(conn) == admin_sermon_series_path(conn, :index)
-    assert Repo.get_by(SermonSeries, @valid_attrs)
+    assert Repo.get_by(SermonSeries, @valid_database_attrs)
   end
 
   @tag :insert_sermon_series

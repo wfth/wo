@@ -6,7 +6,7 @@ defmodule Wo.Resource do
   alias Wo.Repo
   alias Wo.Resource.SermonSeries
 
-  def list_sermon_series, do: Repo.all(SermonSeries)
+  def list_sermon_series, do: Repo.all(SermonSeries) |> populate_float_price()
   def get_sermon_series!(id) do
     Repo.get!(SermonSeries, id)
     |> populate_float_price()
@@ -35,16 +35,16 @@ defmodule Wo.Resource do
   alias Wo.Resource.Sermon
 
   def list_sermons(sermon_series_id, preload: true) do
-    list_sermons(sermon_series_id) |> Repo.preload(:sermon_series)
+    list_sermons(sermon_series_id) |> Repo.preload(:sermon_series) |> populate_float_price(:sermon_series)
   end
   def list_sermons(sermon_series_id) do
-    Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id)
+    Repo.all(from s in Sermon, where: s.sermon_series_id == ^sermon_series_id) |> populate_float_price()
   end
 
   def get_sermon!(id, preload: true) do
     get_sermon!(id)
     |> Repo.preload(:sermon_series)
-    |> populate_float_price()
+    |> populate_float_price(:sermon_series)
   end
   def get_sermon!(id), do: Repo.get!(Sermon, id) |> populate_float_price()
 

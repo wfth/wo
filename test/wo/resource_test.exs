@@ -6,9 +6,9 @@ defmodule Wo.ResourceTest do
   describe "sermon_series" do
     alias Wo.Resource.SermonSeries
 
-    @valid_attrs %{buy_graphic_url: "some buy_graphic_url", description: "some description", graphic_url: "some graphic_url", passages: "some passages", price: 42, released_on_string: "some released_on_string", title: "some title", uuid: "some uuid"}
-    @update_attrs %{buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", graphic_url: "some updated graphic_url", passages: "some updated passages", price: 43, released_on_string: "some updated released_on_string", title: "some updated title", uuid: "some updated uuid"}
-    @invalid_attrs %{buy_graphic_url: nil, description: nil, graphic_url: nil, passages: nil, price: nil, released_on_string: nil, title: nil, uuid: nil}
+    @valid_attrs %{buy_graphic_url: "some buy_graphic_url", description: "some description", graphic_url: "some graphic_url", passages: "some passages", float_price: 42.5, released_on_string: "some released_on_string", title: "some title", uuid: "some uuid"}
+    @update_attrs %{buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", graphic_url: "some updated graphic_url", passages: "some updated passages", float_price: 43.5, released_on_string: "some updated released_on_string", title: "some updated title", uuid: "some updated uuid"}
+    @invalid_attrs %{buy_graphic_url: nil, description: nil, graphic_url: nil, passages: nil, float_price: nil, released_on_string: nil, title: nil, uuid: nil}
 
     def sermon_series_fixture(attrs \\ %{}) do
       {:ok, sermon_series} =
@@ -35,7 +35,7 @@ defmodule Wo.ResourceTest do
       assert sermon_series.description == "some description"
       assert sermon_series.graphic_url == "some graphic_url"
       assert sermon_series.passages == "some passages"
-      assert sermon_series.price == 42
+      assert sermon_series.price == 4250
       assert sermon_series.released_on_string == "some released_on_string"
       assert sermon_series.title == "some title"
       assert sermon_series.uuid == "some uuid"
@@ -53,7 +53,7 @@ defmodule Wo.ResourceTest do
       assert sermon_series.description == "some updated description"
       assert sermon_series.graphic_url == "some updated graphic_url"
       assert sermon_series.passages == "some updated passages"
-      assert sermon_series.price == 43
+      assert sermon_series.price == 4350
       assert sermon_series.released_on_string == "some updated released_on_string"
       assert sermon_series.title == "some updated title"
       assert sermon_series.uuid == "some updated uuid"
@@ -80,9 +80,9 @@ defmodule Wo.ResourceTest do
   describe "sermons" do
     alias Wo.Resource.Sermon
 
-    @valid_attrs %{audio_url: "some audio_url", buy_graphic_url: "some buy_graphic_url", description: "some description", passages: "some passages", price: 42, title: "some title", transcript_text: "some transcript_text", transcript_url: "some transcript_url", uuid: "some uuid"}
-    @update_attrs %{audio_url: "some updated audio_url", buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", passages: "some updated passages", price: 43, title: "some updated title", transcript_text: "some updated transcript_text", transcript_url: "some updated transcript_url", uuid: "some updated uuid"}
-    @invalid_attrs %{audio_url: nil, buy_graphic_url: nil, description: nil, passages: nil, price: nil, title: nil, transcript_text: nil, transcript_url: nil, uuid: nil}
+    @valid_attrs %{audio_url: "some audio_url", buy_graphic_url: "some buy_graphic_url", description: "some description", passages: "some passages", float_price: 42, title: "some title", transcript_text: "some transcript_text", transcript_url: "some transcript_url", uuid: "some uuid"}
+    @update_attrs %{audio_url: "some updated audio_url", buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", passages: "some updated passages", float_price: 43, title: "some updated title", transcript_text: "some updated transcript_text", transcript_url: "some updated transcript_url", uuid: "some updated uuid"}
+    @invalid_attrs %{audio_url: nil, buy_graphic_url: nil, description: nil, passages: nil, float_price: nil, title: nil, transcript_text: nil, transcript_url: nil, uuid: nil}
 
     def sermon_fixture(attrs \\ %{}) do
       sermon_series = sermon_series_fixture()
@@ -110,7 +110,7 @@ defmodule Wo.ResourceTest do
       assert sermon.buy_graphic_url == "some buy_graphic_url"
       assert sermon.description == "some description"
       assert sermon.passages == "some passages"
-      assert sermon.price == 42
+      assert sermon.price == 4200
       assert sermon.title == "some title"
       assert sermon.transcript_text == "some transcript_text"
       assert sermon.transcript_url == "some transcript_url"
@@ -129,7 +129,7 @@ defmodule Wo.ResourceTest do
       assert sermon.buy_graphic_url == "some updated buy_graphic_url"
       assert sermon.description == "some updated description"
       assert sermon.passages == "some updated passages"
-      assert sermon.price == 43
+      assert sermon.price == 4300
       assert sermon.title == "some updated title"
       assert sermon.transcript_text == "some updated transcript_text"
       assert sermon.transcript_url == "some updated transcript_url"

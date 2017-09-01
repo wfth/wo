@@ -1,7 +1,7 @@
 defmodule WoWeb.VisitorSermonControllerTest do
   use WoWeb.ConnCase
 
-  @valid_attrs %{description: "some content", passages: "some content", price: 120, title: "some content", uuid: "some content"}
+  @valid_attrs %{description: "some content", passages: "some content", float_price: 120.5, title: "some content", uuid: "some content"}
 
   setup do
     sermon_series = insert_sermon_series(@valid_attrs)

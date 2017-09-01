@@ -1,15 +1,13 @@
 defmodule Wo.TestHelpers do
-  alias Wo.Repo
+  alias Wo.Resource
 
   def insert_sermon_series(attrs \\ %{}) do
-    %Wo.Resource.SermonSeries{}
-    |> Wo.Resource.SermonSeries.changeset(attrs)
-    |> Repo.insert!()
+    {:ok, series} = Resource.create_sermon_series(attrs)
+    series
   end
 
   def insert_sermon(series, attrs \\ %{}) do
-    series
-    |> Ecto.build_assoc(:sermons, attrs)
-    |> Repo.insert!()
+    {:ok, sermon} = Resource.create_sermon(attrs, series)
+    sermon
   end
 end

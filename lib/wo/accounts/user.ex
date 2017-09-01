@@ -20,6 +20,7 @@ defmodule Wo.Account.User do
     user
     |> cast(attrs, [:first_name, :last_name, :email, :password, :administrator])
     |> validate_required([:first_name, :last_name, :email, :password])
+    |> put_password()
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
     |> validate_length(:password, min: 5)

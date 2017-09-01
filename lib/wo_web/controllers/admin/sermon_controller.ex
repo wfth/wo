@@ -46,10 +46,9 @@ defmodule WoWeb.Admin.SermonController do
   end
 
   def update(conn, %{"id" => id, "sermon" => sermon_params}) do
-    sermon = Repo.get!(Sermon, id)
-    changeset = Sermon.changeset(sermon, sermon_params)
+    sermon = Resource.get_sermon!(id)
 
-    case Repo.update(changeset) do
+    case Resource.update_sermon(sermon, sermon_params) do
       {:ok, sermon} ->
         conn
         |> put_flash(:info, "Sermon updated successfully.")
