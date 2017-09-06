@@ -60,5 +60,85 @@ defmodule Wo.CartsTest do
       assert %Ecto.Changeset{} = Carts.change_cart(cart)
     end
   end
+
+  describe "cart_items" do
+    alias Wo.Carts.Cart
+    alias Wo.Carts.CartItem
+
+    # TO TEST
+    # - [] creating first cart item creates a cart
+    # - [] delete sole cart item deletes associated cart
+    # - [] creating a cart item for a resource that already has a cart item
+    #      adds to the quantity of the existing cart item
+
+    def sermon_series_fixture(attrs \\ %{}) do
+      sermon_series_attrs = %{uuid: "some uuid",
+                   title: "some title",
+                   description: "some description",
+                   passages: "some passages",
+                   float_price: 20.0}
+      {:ok, sermon_series} =
+        attrs
+        |> Enum.into(sermon_series_attrs)
+        |> Wo.Resource.create_sermon_series()
+
+      sermon_series
+    end
+
+    setup tags do
+      sermon_series = sermon_series_fixture()
+      cart = cart_fixture()
+      {_, resource_type} = sermon_series.__meta__.source
+
+      resource_attrs = %{"resource_id" => sermon_series.id, "resource_type" => resource_type}
+      {:ok, cart_item} = Enum.into(resource_attrs, %{"quantity" => tags[:quantity] || 1})
+                         |> Carts.create_cart_item(cart)
+
+      %{sermon_series: sermon_series, cart: cart, cart_item: cart_item, resource_attrs: resource_attrs}
+    end
+
+    test "list_cart_items/0 returns all cart_item", %{cart_item: cart_item} do
+      assert Carts.list_cart_items(cart_item.cart.id, preload: true) == [cart_item]
+    end
+
+    test "get_cart_item!/1 returns the cart_item with given id", %{cart_item: cart_item} do
+      assert Carts.get_cart_item!(cart_item.id, preload: true) == cart_item
+    end
+
+    @tag quantity: 3
+    test "create_cart_item/1 with valid data creates a cart_item", %{cart_item: cart_item, resource_attrs: resource_attrs} do
+      assert cart_item.price == 6000
+      assert cart_item.quantity == 3
+      assert cart_item.resource_id == resource_attrs["resource_id"]
+      assert cart_item.resource_type == resource_attrs["resource_type"]
+    end
+
+    test "create_cart_item/1 with invalid data returns error changeset", %{cart: cart} do
+      assert {:error, %Ecto.Changeset{}} = Carts.create_cart_item(%{"quantity" => 3, "resource_id" => 900000, "resource_type" => "chuckles"}, cart)
+    end
+
+    test "update_cart_item/2 with valid data updates the cart_item", %{cart_item: cart_item, resource_attrs: resource_attrs} do
+      assert {:ok, cart_item} = Carts.update_cart_item(cart_item, %{"quantity" => 5})
+      assert %CartItem{} = cart_item
+      assert cart_item.price == 10000
+      assert cart_item.quantity == 5
+      assert cart_item.resource_id == resource_attrs["resource_id"]
+      assert cart_item.resource_type == resource_attrs["resource_type"]
+    end
+
+    test "update_cart_item/2 with invalid data returns error changeset", %{cart_item: cart_item} do
+      assert {:error, %Ecto.Changeset{}} = Carts.update_cart_item(cart_item, %{"quantity" => -1})
+      assert cart_item == Carts.get_cart_item!(cart_item.id, preload: true)
+    end
+
+    test "delete_cart_item/1 deletes the cart_item", %{cart_item: cart_item} do
+      assert {:ok, %{cart: %Cart{}, cart_item: %CartItem{}}} = Carts.delete_cart_item(cart_item)
+      assert_raise Ecto.NoResultsError, fn -> Carts.get_cart_item!(cart_item.id) end
+    end
+
+    test "change_cart_item/1 returns a cart_item changeset", %{cart_item: cart_item} do
+      assert %Ecto.Changeset{} = Carts.change_cart_item(cart_item)
+    end
+  end
 end
 

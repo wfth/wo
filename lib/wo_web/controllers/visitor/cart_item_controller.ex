@@ -10,7 +10,7 @@ defmodule WoWeb.Visitor.CartItemController do
     cart = cart |> Wo.Repo.preload(:cart_items)
     conn = WoWeb.Session.put_cart(conn, cart)
 
-    with {:ok, _cart_item} <- Carts.create_cart_item(cart, cart_item_params) do
+    with {:ok, _cart_item} <- Carts.create_cart_item(cart_item_params, cart) do
       conn
       |> put_flash(:info, "Added item to your cart.")
       |> redirect(to: cart_item_params["redirect_to"])

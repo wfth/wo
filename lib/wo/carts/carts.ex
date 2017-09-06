@@ -39,28 +39,53 @@ defmodule Wo.Carts do
 
   alias Wo.Carts.CartItem
 
-  def resource(%CartItem{} = cart_item) do
+  def resource(type, id) do
     type_mapping = %{"sermons" => Wo.Resource.Sermon, "sermon_series" => Wo.Resource.SermonSeries}
-    Repo.get_by(type_mapping[cart_item.resource_type], id: cart_item.resource_id)
+
+    if type_mapping[type] && id, do:
+      Repo.get_by(type_mapping[type], id: id),
+    else: nil
+  end
+  def resource(%CartItem{} = cart_item) do
+    resource(cart_item.resource_type, cart_item.resource_id)
   end
 
+  def list_cart_items(cart_id, preload: true) do
+    list_cart_items(cart_id) |> Repo.preload(:cart)
+  end
   def list_cart_items(cart_id) do
     Repo.all(from c in CartItem, where: c.cart_id == ^cart_id)
   end
 
+  def get_cart_item!(id, preload: true) do
+    get_cart_item!(id) |> Repo.preload(:cart)
+  end
   def get_cart_item!(id), do: Repo.get!(CartItem, id)
 
-  def create_cart_item(%Cart{} = cart,
-    %{"resource_id" => resource_id,
-      "resource_type" => resource_type} = attrs \\ %{}) do
+  def create_cart_item(%{"resource_id" => resource_id,
+                         "resource_type" => resource_type,
+                         "quantity" => quantity} = attrs,
+                       %Cart{} = cart) do
+    _create_cart_item(attrs, resource_id, resource_type, cart, quantity)
+  end
+  def create_cart_item(%{"resource_id" => resource_id,
+                         "resource_type" => resource_type} = attrs,
+                       %Cart{} = cart) do
+    _create_cart_item(attrs, resource_id, resource_type, cart)
+  end
+  def _create_cart_item(attrs, resource_id, resource_type, cart, quantity \\ 1) do
     existing_cart_item = Repo.get_by(CartItem, resource_id: resource_id, resource_type: resource_type)
     if existing_cart_item do
       update_cart_item(existing_cart_item, %{"quantity" => existing_cart_item.quantity + 1})
     else
-      %CartItem{}
-      |> CartItem.changeset(attrs |> Map.put("quantity", 1))
-      |> put_assoc(:cart, cart)
-      |> Repo.insert()
+      if resource = resource(resource_type, resource_id) do
+        %CartItem{}
+        |> CartItem.changeset(attrs |> Enum.into(%{"price" => resource.price * quantity}))
+        |> put_assoc(:cart, cart)
+        |> Repo.insert()
+      else
+        {:error, CartItem.changeset(%CartItem{}, attrs) |> add_error(:resource, "invalid")}
+      end
     end
   end
 
@@ -73,6 +98,7 @@ defmodule Wo.Carts do
   def update_cart_item(%CartItem{} = cart_item, %{"quantity" => quantity} = attrs) when is_binary(quantity) do
     _update_cart_item(cart_item, Map.put(attrs, "price", String.to_integer(attrs["quantity"]) * resource(cart_item).price))
   end
+  def update_cart_item(%CartItem{} = cart_item, attrs), do: {:error, CartItem.changeset(cart_item, attrs)}
   defp _update_cart_item(%CartItem{} = cart_item, attrs) do
     cart_item
     |> CartItem.changeset(attrs)
