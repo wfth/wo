@@ -10,15 +10,6 @@ defmodule Wo.ResourceTest do
     @update_attrs %{buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", graphic_url: "some updated graphic_url", passages: "some updated passages", float_price: 43.5, released_on_string: "some updated released_on_string", title: "some updated title", uuid: "some updated uuid"}
     @invalid_attrs %{buy_graphic_url: nil, description: nil, graphic_url: nil, passages: nil, float_price: nil, released_on_string: nil, title: nil, uuid: nil}
 
-    def sermon_series_fixture(attrs \\ %{}) do
-      {:ok, sermon_series} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Resource.create_sermon_series()
-
-      sermon_series
-    end
-
     test "list_sermon_series/0 returns all sermon_series" do
       sermon_series = sermon_series_fixture()
       assert Resource.list_sermon_series() == [sermon_series]
@@ -83,16 +74,6 @@ defmodule Wo.ResourceTest do
     @valid_attrs %{audio_url: "some audio_url", buy_graphic_url: "some buy_graphic_url", description: "some description", passages: "some passages", float_price: 42, title: "some title", transcript_text: "some transcript_text", transcript_url: "some transcript_url", uuid: "some uuid"}
     @update_attrs %{audio_url: "some updated audio_url", buy_graphic_url: "some updated buy_graphic_url", description: "some updated description", passages: "some updated passages", float_price: 43, title: "some updated title", transcript_text: "some updated transcript_text", transcript_url: "some updated transcript_url", uuid: "some updated uuid"}
     @invalid_attrs %{audio_url: nil, buy_graphic_url: nil, description: nil, passages: nil, float_price: nil, title: nil, transcript_text: nil, transcript_url: nil, uuid: nil}
-
-    def sermon_fixture(attrs \\ %{}) do
-      sermon_series = sermon_series_fixture()
-      {:ok, sermon} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Resource.create_sermon(sermon_series)
-
-      sermon
-    end
 
     test "list_sermons/0 returns all sermons" do
       sermon = sermon_fixture()

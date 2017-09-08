@@ -2,13 +2,15 @@ defmodule WoWeb.Visitor.CartItemController do
   use WoWeb, :controller
 
   alias Wo.Carts
+  alias WoWeb.Session
 
   action_fallback WoWeb.FallbackController
 
   def create(conn, cart_item_params) do
-    {:ok, cart} = unless WoWeb.Session.cart(conn), do: Carts.create_cart(), else: {:ok, WoWeb.Session.cart(conn)}
-    cart = cart |> Wo.Repo.preload(:cart_items)
-    conn = WoWeb.Session.put_cart(conn, cart)
+    cart = (unless WoWeb.Session.cart(conn), do: Carts.create_cart(), else: Session.cart(conn))
+           |> Session.associate_cart(conn)
+           |> Wo.Repo.preload(:cart_items)
+    conn = Session.put_cart(cart, conn)
 
     with {:ok, _cart_item} <- Carts.create_cart_item(cart_item_params, cart) do
       conn

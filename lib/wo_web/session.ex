@@ -5,9 +5,13 @@ defmodule WoWeb.Session do
 
   def login(conn, params) do
     user = Account.get_user_by_email(String.downcase(get(params, :email)))
+           |> Wo.Repo.preload(:carts)
     if authenticate(user, get(params, :password)) do
-      {:ok, conn
-            |> put_session(:current_user, user.id)}
+      conn = (if cart = List.first(user.carts), do:
+        put_cart(cart, conn),
+      else: conn) |> put_session(:current_user, user.id)
+
+      {:ok, conn}
     else
       {:error, conn}
     end
@@ -16,6 +20,7 @@ defmodule WoWeb.Session do
   def logout(conn) do
     conn
     |> delete_session(:current_user)
+    |> delete_session(:cart)
   end
 
   def authenticate(user, password) do
@@ -38,11 +43,21 @@ defmodule WoWeb.Session do
 
   alias Wo.Carts
 
-  def put_cart(conn, cart) do
+  def put_cart(cart, conn) do
     conn |> put_session(:cart, cart.id)
   end
 
   def cart(conn) do
     if get_session(conn, :cart), do: Carts.get_cart(get_session(conn, :cart))
+  end
+
+  def associate_cart({:ok, cart}, conn), do: associate_cart(cart, conn)
+  def associate_cart(cart, conn) do
+    if user = user(conn) do
+      {:ok, cart} = Carts.associate_cart(cart, user)
+      cart
+    else
+      cart
+    end
   end
 end

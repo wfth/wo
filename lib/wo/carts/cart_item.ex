@@ -19,7 +19,7 @@ defmodule Wo.Carts.CartItem do
   @doc false
   def changeset(%CartItem{} = cart_item, attrs) do
     cart_item
-    |> cast(attrs, [:resource_type, :resource_id, :quantity, :price])
+    |> cast(attrs, [:cart_id, :resource_type, :resource_id, :quantity, :price])
     |> validate_required([:resource_type, :resource_id, :quantity, :price])
     |> is_positive_integer(:price)
   end

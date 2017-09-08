@@ -23,6 +23,30 @@ defmodule Wo.Carts do
     |> Repo.update()
   end
 
+  def merge_carts!(%Cart{} = cart, %Cart{} = kart) do
+    new_cart = cart
+    |> Wo.Repo.preload(:user)
+    |> Map.delete(:id)
+    |> Map.put(:cart_items, [])
+    |> Wo.Repo.insert!()
+    |> copy_cart_items!(from: cart)
+    |> copy_cart_items!(from: kart)
+
+    new_cart
+  end
+
+  defp copy_cart_items!(to_cart, from: from_cart) do
+    from_cart = Repo.preload(from_cart, :cart_items)
+    _copy_cart_items(to_cart, from_cart.cart_items)
+  end
+  defp _copy_cart_items(to_cart, []), do: to_cart |> Repo.preload(:cart_items, force: true)
+  defp _copy_cart_items(to_cart, [head | tail]) do
+    params = head |> Repo.preload(:cart) |> Map.from_struct() |> Map.put(:cart_id, to_cart.id) |> Map.delete(:id)
+    Wo.Carts.CartItem.changeset(%Wo.Carts.CartItem{}, params) |> Wo.Repo.insert!()
+
+    _copy_cart_items(to_cart, tail)
+  end
+
   def update_cart(%Cart{} = cart, attrs) do
     cart
     |> Cart.changeset(attrs)
@@ -74,13 +98,13 @@ defmodule Wo.Carts do
     _create_cart_item(attrs, resource_id, resource_type, cart)
   end
   def _create_cart_item(attrs, resource_id, resource_type, cart, quantity \\ 1) do
-    existing_cart_item = Repo.get_by(CartItem, resource_id: resource_id, resource_type: resource_type)
+    existing_cart_item = Repo.get_by(CartItem, resource_id: resource_id, resource_type: resource_type, cart_id: cart.id)
     if existing_cart_item do
       update_cart_item(existing_cart_item, %{"quantity" => existing_cart_item.quantity + 1})
     else
       if resource = resource(resource_type, resource_id) do
         %CartItem{}
-        |> CartItem.changeset(attrs |> Enum.into(%{"price" => resource.price * quantity}))
+        |> CartItem.changeset(attrs |> Enum.into(%{"price" => resource.price * quantity, "quantity" => quantity}))
         |> put_assoc(:cart, cart)
         |> Repo.insert()
       else

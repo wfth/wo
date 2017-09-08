@@ -59,6 +59,64 @@ defmodule Wo.CartsTest do
       cart = cart_fixture()
       assert %Ecto.Changeset{} = Carts.change_cart(cart)
     end
+
+    test "merge_carts/2 returns a new merged cart" do
+      {cart, kart, sermon_series, sermon} = merge_carts_data()
+
+      {:ok, cart_item} = Carts.create_cart_item(%{"resource_id" => sermon_series.id,
+                                                  "resource_type" => "sermon_series",
+                                                  "quantity" => 1}, cart)
+      {:ok, kart_item} = Carts.create_cart_item(%{"resource_id" => sermon.id,
+                                                  "resource_type" => "sermons",
+                                                  "quantity" => 4}, kart)
+
+      merged_cart = Carts.merge_carts!(cart, kart)
+
+      # Make sure the carts and their cart items are unchanged
+      assert cart == Carts.get_cart(cart.id)
+      assert [Carts.get_cart_item!(cart_item.id)] == (cart |> Repo.preload(:cart_items, force: true)).cart_items
+      assert kart == Carts.get_cart(kart.id)
+      assert [Carts.get_cart_item!(kart_item.id)] == (kart |> Repo.preload(:cart_items, force: true)).cart_items
+
+      # Check contents of new merged cart
+      assert merged_cart.id != cart.id && merged_cart.id != kart.id
+      for ci <- merged_cart.cart_items do
+        assert cart_items_equal(ci, cart_item) || cart_items_equal(ci, kart_item)
+        assert ci.cart_id == merged_cart.id
+      end
+    end
+
+    test "merge_carts/2 combines cart items when possible" do
+      {cart, kart, sermon_series, _sermon} = merge_carts_data()
+
+      {:ok, _cart_item} = Carts.create_cart_item(%{"resource_id" => sermon_series.id,
+                                                  "resource_type" => "sermon_series",
+                                                  "quantity" => 1}, cart)
+      {:ok, _kart_item} = Carts.create_cart_item(%{"resource_id" => sermon_series.id,
+                                                  "resource_type" => "sermon_series",
+                                                  "quantity" => 4}, kart)
+
+      merged_cart = Carts.merge_carts!(cart, kart)
+
+      assert Enum.count(merged_cart.cart_items) == 1
+      assert List.first(merged_cart.cart_items).quantity == 5
+    end
+
+    def merge_carts_data() do
+      cart = cart_fixture()
+      kart = cart_fixture()
+      sermon_series = sermon_series_fixture()
+      sermon = sermon_fixture()
+
+      {cart, kart, sermon_series, sermon}
+    end
+
+    def cart_items_equal(cart_item, kart_item) do
+      cart_item.price == kart_item.price &&
+        cart_item.quantity == kart_item.quantity &&
+        cart_item.resource_id == kart_item.resource_id &&
+        cart_item.resource_type == kart_item.resource_type
+    end
   end
 
   describe "cart_items" do
@@ -70,20 +128,6 @@ defmodule Wo.CartsTest do
     # - [] delete sole cart item deletes associated cart
     # - [] creating a cart item for a resource that already has a cart item
     #      adds to the quantity of the existing cart item
-
-    def sermon_series_fixture(attrs \\ %{}) do
-      sermon_series_attrs = %{uuid: "some uuid",
-                   title: "some title",
-                   description: "some description",
-                   passages: "some passages",
-                   float_price: 20.0}
-      {:ok, sermon_series} =
-        attrs
-        |> Enum.into(sermon_series_attrs)
-        |> Wo.Resource.create_sermon_series()
-
-      sermon_series
-    end
 
     setup tags do
       sermon_series = sermon_series_fixture()
@@ -107,7 +151,7 @@ defmodule Wo.CartsTest do
 
     @tag quantity: 3
     test "create_cart_item/1 with valid data creates a cart_item", %{cart_item: cart_item, resource_attrs: resource_attrs} do
-      assert cart_item.price == 6000
+      assert cart_item.price == 12750
       assert cart_item.quantity == 3
       assert cart_item.resource_id == resource_attrs["resource_id"]
       assert cart_item.resource_type == resource_attrs["resource_type"]
@@ -120,7 +164,7 @@ defmodule Wo.CartsTest do
     test "update_cart_item/2 with valid data updates the cart_item", %{cart_item: cart_item, resource_attrs: resource_attrs} do
       assert {:ok, cart_item} = Carts.update_cart_item(cart_item, %{"quantity" => 5})
       assert %CartItem{} = cart_item
-      assert cart_item.price == 10000
+      assert cart_item.price == 21250
       assert cart_item.quantity == 5
       assert cart_item.resource_id == resource_attrs["resource_id"]
       assert cart_item.resource_type == resource_attrs["resource_type"]

@@ -15,4 +15,40 @@ defmodule Wo.TestHelpers do
   def postgresql_static_datetime() do
     %NaiveDateTime{year: 2010, month: 4, day: 17, hour: 14, minute: 0, second: 0, microsecond: {0, 6}}
   end
+
+  def sermon_series_fixture(attrs \\ %{}) do
+    default_attrs = %{buy_graphic_url: "some buy_graphic_url",
+                      description: "some description",
+                      graphic_url: "some graphic_url",
+                      passages: "some passages",
+                      float_price: 42.5,
+                      released_on_string: "some released_on_string",
+                      title: "some title",
+                      uuid: "some uuid"}
+    {:ok, sermon_series} =
+      attrs
+      |> Enum.into(default_attrs)
+      |> Wo.Resource.create_sermon_series()
+
+    sermon_series
+  end
+
+  def sermon_fixture(attrs \\ %{}) do
+    sermon_series = sermon_series_fixture()
+    default_attrs = %{audio_url: "some audio_url",
+                      buy_graphic_url: "some buy_graphic_url",
+                      description: "some description",
+                      passages: "some passages",
+                      float_price: 42.5,
+                      title: "some title",
+                      transcript_text: "some transcript_text",
+                      transcript_url: "some transcript_url",
+                      uuid: "some uuid"}
+    {:ok, sermon} =
+      attrs
+      |> Enum.into(default_attrs)
+      |> Resource.create_sermon(sermon_series)
+
+    sermon
+  end
 end
