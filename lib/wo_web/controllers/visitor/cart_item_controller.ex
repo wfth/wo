@@ -7,7 +7,7 @@ defmodule WoWeb.Visitor.CartItemController do
   action_fallback WoWeb.FallbackController
 
   def create(conn, cart_item_params) do
-    cart = (unless WoWeb.Session.cart(conn), do: Carts.create_cart(), else: Session.cart(conn))
+    cart = (unless Session.cart(conn), do: Carts.create_cart(), else: Session.cart(conn))
            |> Session.associate_cart(conn)
            |> Wo.Repo.preload(:cart_items)
     conn = Session.put_cart(cart, conn)

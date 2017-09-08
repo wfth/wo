@@ -2,16 +2,24 @@ defmodule WoWeb.Session do
   import Plug.Conn
 
   alias Wo.Account
+  alias Wo.Carts
 
   def login(conn, params) do
     user = Account.get_user_by_email(String.downcase(get(params, :email)))
            |> Wo.Repo.preload(:carts)
     if authenticate(user, get(params, :password)) do
-      conn = (if cart = List.first(user.carts), do:
-        put_cart(cart, conn),
-      else: conn) |> put_session(:current_user, user.id)
+      conn = cond do
+        (user_cart = List.first(user.carts)) && cart(conn) ->
+          merged_cart = Carts.merge_carts!(user_cart, cart(conn))
+          Carts.delete_cart(user_cart)
+          Carts.delete_cart(cart(conn))
+          put_cart(merged_cart, conn)
+        user_cart = List.first(user.carts) ->
+          put_cart(user_cart, conn)
+        true -> conn
+      end
 
-      {:ok, conn}
+      {:ok, put_session(conn, :current_user, user.id)}
     else
       {:error, conn}
     end
@@ -40,8 +48,6 @@ defmodule WoWeb.Session do
 
   defp get(map, key) when is_atom(key), do: map[key] || map[Atom.to_string(key)]
   defp user_id(conn), do: get_session(conn, :current_user)
-
-  alias Wo.Carts
 
   def put_cart(cart, conn) do
     conn |> put_session(:cart, cart.id)

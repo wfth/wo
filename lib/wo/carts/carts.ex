@@ -41,8 +41,23 @@ defmodule Wo.Carts do
   end
   defp _copy_cart_items(to_cart, []), do: to_cart |> Repo.preload(:cart_items, force: true)
   defp _copy_cart_items(to_cart, [head | tail]) do
-    params = head |> Repo.preload(:cart) |> Map.from_struct() |> Map.put(:cart_id, to_cart.id) |> Map.delete(:id)
-    Wo.Carts.CartItem.changeset(%Wo.Carts.CartItem{}, params) |> Wo.Repo.insert!()
+    existing_cart_item = Enum.find(to_cart.cart_items,
+      fn(ci) ->
+        ci.resource_id == head.resource_id &&
+          ci.resource_type == head.resource_type
+      end)
+    if existing_cart_item do
+      update_cart_item(existing_cart_item, %{"quantity" => existing_cart_item.quantity + head.quantity})
+    else
+      params = head
+      |> Repo.preload(:cart)
+      |> Map.from_struct()
+      |> Map.put(:cart_id, to_cart.id)
+      |> Map.delete(:id)
+
+      Wo.Carts.CartItem.changeset(%Wo.Carts.CartItem{}, params)
+      |> Wo.Repo.insert!()
+    end
 
     _copy_cart_items(to_cart, tail)
   end
