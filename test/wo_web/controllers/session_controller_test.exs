@@ -41,6 +41,22 @@ defmodule WoWeb.SessionControllerTest do
     assert get_flash(conn, :info) == "You are already logged in."
   end
 
+  test "logging in associates the anonymous cart with the user", %{conn: conn, user: user} do
+    sermon = sermon_fixture()
+    {:ok, cart} = Carts.create_cart()
+    Carts.create_cart_item(%{"resource_id" => sermon.id,
+                             "resource_type" => "sermons",
+                             "quantity" => 2}, cart)
+    assert Wo.Repo.preload(user, :carts).carts == []
+
+    conn = Session.put_cart(cart, conn)
+    {:ok, _} = Session.login(conn, %{email: user.email, password: user.password})
+
+    user_carts = Wo.Repo.preload(user, :carts).carts |> Wo.Repo.preload(:user)
+    cart = Wo.Carts.get_cart(cart.id)
+    assert List.first(user_carts) == Wo.Repo.preload(cart, :user)
+  end
+
   @tag :login
   test "logging out removes the associated cart from the session", %{conn: conn, user: user} do
     sermon = sermon_fixture()

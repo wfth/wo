@@ -16,6 +16,9 @@ defmodule WoWeb.Session do
           put_cart(merged_cart, conn)
         user_cart = List.first(user.carts) ->
           put_cart(user_cart, conn)
+        cart(conn) ->
+          {:ok, associated_cart} = Carts.associate_cart(cart(conn), user)
+          put_cart(associated_cart, conn)
         true -> conn
       end
 
